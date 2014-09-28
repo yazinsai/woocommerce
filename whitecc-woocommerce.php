@@ -13,12 +13,6 @@ License: Under GPL2
 
 require_once('vendor/autoload.php'); 
 
-add_action( 'wp_enqueue_scripts', 'tci_enqueue' );
-
-function tci_enqueue(){
-   wp_enqueue_script( 'custom', 'https://js.braintreegateway.com/v1/braintree.js' , array('jquery'), '3.7.12' );
-}
-
 add_action('plugins_loaded', 'woocommerce_tech_whitecc_init', 0);
 
 function woocommerce_tech_whitecc_init() {
