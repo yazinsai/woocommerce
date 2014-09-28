@@ -11,7 +11,7 @@ License: Under GPL2
 */
 
 
-require_once('White.php'); 
+require_once('vendor/autoload.php'); 
 
 add_action( 'wp_enqueue_scripts', 'tci_enqueue' );
 
