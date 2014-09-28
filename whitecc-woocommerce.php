@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: White Payment Extension for WooCommerces
-Description: Custom payment extension for woocommerce
-Version: 0.2
+Plugin Name: White Payments
+Description: A full stack payment solution for the Middle East - www.whitepayments.com
+Version: 0.3
 Plugin URI: #
-Author: Ishan Verma
-Author URI: http://www.wuxxa.com/
+Author: White Payments
+Author URI: http://www.whitepayments.com
 License: Under GPL2   
 
 */
@@ -40,7 +40,7 @@ function woocommerce_tech_whitecc_init() {
       public function __construct(){
 
          $this->id               = 'whitecc';
-         $this->method_title     = __('White for WooCommerce', 'wc-tech-whitecc');
+         $this->method_title     = __('White Payments', 'wc-tech-whitecc');
        #  $this->icon             = WP_PLUGIN_URL . "/" . plugin_basename(dirname(__FILE__)) . '/images/logo.gif';
          $this->has_fields       = true;
          $this->init_form_fields();
@@ -95,7 +95,6 @@ function woocommerce_tech_whitecc_init() {
             'title'        => array(
                   'title'        => __('Title:', 'wc-tech-whitecc'),
                   'type'         => 'text',
-                  'description'  => __('This controls the title which the user sees during checkout.', 'wc-tech-whitecc'),
                   'default'      => __('Credit card (Powered by White)', 'wc-tech-whitecc')),
             'description'  => array(
                   'title'        => __('Description:', 'wc-tech-whitecc'),
@@ -110,7 +109,7 @@ function woocommerce_tech_whitecc_init() {
             'currency'    => array(
                   'title'        => __('Currency'),
                   'type'         => 'select',
-                  'options'      => array('bhd'=>'BHD - Bahraini Dinar', 'usd'=>'USD - US Dollars'),
+                  'options'      => array('BHD'=>'BHD - Bahraini Dinar', 'USD'=>'USD - US Dollars'),
                   'description'  => "Select the currency in which the user will be charged" ),
             'pek'     => array(
                   'title'        => __('Public Encryption Key', 'wc-tech-whitecc'),
@@ -166,18 +165,18 @@ function woocommerce_tech_whitecc_init() {
       {
          if ( $this->description ) 
             echo wpautop(wptexturize($this->description));
-            echo "Card Number: <input type='text' name='card[number]' placeholder='Card Number'>&nbsp;&nbsp;";
-             echo "CVV: <input type='text' name='card[cvv]' style='width:40px;' placeholder='CVV'>&nbsp;&nbsp;<br/><br/>";
-            echo 'Expiry: <select name="card[exp_month]"><option value="">-Exp Mo.-</option>';
+            echo "<input type='text' name='card[number]' style='margin:10px 0;padding:5px;width:100%;max-width:240px' placeholder='Card Number'><br/>";
+            echo "<select name='card[exp_month]' style='margin:0;padding:5px;width:33.33%;max-width:80px;'><option value=''>MM</option>";
             for( $i =1; $i < 13; $i++){
                echo '<option value="'.str_pad($i, 2,'0',STR_PAD_LEFT).'">'.str_pad($i, 2,'0',STR_PAD_LEFT).'</option>'."\n";
             }
-            echo '</select>';
-            echo '<select name="card[exp_year]"><option value="">-Exp Year-</option>';
+            echo "</select>";
+            echo "<select name='card[exp_year]' style='margin:0;padding:5px;width:33.33%;max-width:80px;'><option value=''>YYYY</option>";
                   for( $i =0; $i < 15; $i++){
                      echo '<option value="'.(date('Y')+$i).'">'.(date('Y')+$i).'</option>'."\n";
                   }
-            echo '</select><br/>';
+            echo "</select>";
+            echo "<input type='password' name='card[cvv]' maxlength='6' style='margin:0;padding:5px;width:33.33%;max-width:80px;' placeholder='CVV'><br/>";
            
            
       }
@@ -193,7 +192,7 @@ function woocommerce_tech_whitecc_init() {
            }
            
            if( !$this->isCCVNumber($_POST['card']['cvv']) ){
-              return $woocommerce->add_error(__('(Card Error) Invalid cvv number.', 'wc-tech-whitecc'));
+              return $woocommerce->add_error(__('(Card Error) Invalid CVV number.', 'wc-tech-whitecc'));
            }
               
           
