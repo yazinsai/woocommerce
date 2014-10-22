@@ -37,7 +37,7 @@ function woocommerce_white(){
             $this->init_settings();
 
             // Define user set variables
-            $this->title = $this->get_option('title');
+            $this->title = "Credit card (powered by White)";
             $this->test_publishable_key = $this->get_option('test_publishable_key');
             $this->test_secret_key = $this->get_option('test_secret_key');
             $this->live_publishable_key = $this->get_option('live_publishable_key');
@@ -78,7 +78,7 @@ function woocommerce_white(){
 
         /**
          * Admin Panel Options
-         * - Options for bits like 'title' and availability on a country-by-country basis
+         * - Options for bits like 'api keys' and availability on a country-by-country basis
          *
          * @since 1.0.0
          */
@@ -119,18 +119,11 @@ function woocommerce_white(){
                     'label' => __( 'Enable White', 'woocommerce' ),
                     'default' => 'yes'
                 ),
-                'title' => array(
-                    'title' => __( 'Title', 'woocommerce' ),
-                    'type' => 'text',
-                    'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce' ),
-                    'default' => __( 'Credit Card', 'woocommerce' ),
-                    'desc_tip'      => true,
-                ),
                 'description' => array(
                     'title' => __( 'Description', 'woocommerce' ),
-                    'type' => 'textarea',
-                    'description' => __( 'This controls the description which the user sees during checkout.', 'woocommerce' ),
-                    'default' => __( 'Pay with Credit Card', 'woocommerce' )
+                    'type' => 'text',
+                    'description' => __( 'This is the description the user sees during checkout.', 'woocommerce' ),
+                    'default' => __( 'Pay for your items with Credit Card', 'woocommerce' )
                 ),
                 'test_publishable_key' => array(
                     'title' => __( 'Test Publishable Key', 'woocommerce' ),
@@ -201,7 +194,6 @@ function woocommerce_white(){
             <p class="form-row form-row-first">
                 <label for="ccNo"><?php echo __( 'Credit Card number', 'woocommerce' ) ?> <span class="required">*</span></label>
                 <input type="text" class="input-text" id="ccNo" autocomplete="off" value="" />
-
             </p>
 
             <div class="clear"></div>
@@ -314,7 +306,7 @@ function woocommerce_white(){
 
             </script>
 
-            <script type="text/javascript" src="http://fast.whitepayments.com/white.min.js"></script>
+            <script type="text/javascript" src="https://2c6a19c6bb1f6571950c-395de3b3cefca5c2745ee8be4cb990a5.ssl.cf3.rackcdn.com/white.min.js"></script>
             <?php
         }
 
