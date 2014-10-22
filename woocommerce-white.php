@@ -330,7 +330,7 @@ function woocommerce_white(){
             $white_args = array(
                             'card'          => $_POST['whiteToken'],
                             'currency'      => get_woocommerce_currency(),
-                            'amount'        => $order->get_total(),
+                            'amount'        => $order->get_total());/*,
 
                             // These fields are currently ignored (TODO: Track them)
                             // TODO: Track 'client' (e.g. WooCommerce)
@@ -350,7 +350,7 @@ function woocommerce_white(){
                                 'email'         => $order->billing_email,
                                 'phoneNumber'   => $order->billing_phone
                             )
-                        );
+                        );*/
 
             try {
                 if ($this->test_mode == 'yes') {
@@ -365,7 +365,7 @@ function woocommerce_white(){
                     'redirect' => $this->get_return_url( $order )
                 );
             } catch (White_Error $e) {
-                $woocommerce->add_error(__('Payment error:', 'woothemes') . $e->getMessage());
+                $woocommerce->add_error(__('Error:', 'woothemes') . $e->getMessage());
                 return;
             }
         }
