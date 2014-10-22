@@ -272,7 +272,7 @@ function woocommerce_white(){
                     else {
                         // Successfully retrieved a token
                         clearPaymentFields();
-                        jQuery('#token').val(data.response.id);
+                        jQuery('#token').val(response.id);
                         jQuery('#place_order').unbind('click');
                         jQuery('#place_order').click(function(e) {
                             return true;
@@ -294,7 +294,7 @@ function woocommerce_white(){
                                 cvv: $('#cvv').val()
                             },
                             amount: <?php echo $woocommerce->cart->total ?>,
-                            currency: <?php echo get_woocommerce_currency() ?>
+                            currency: '<?php echo get_woocommerce_currency() ?>'
                         }, whiteCallback);
                     } else {
                         jQuery('#place_order').unbind('click');
@@ -337,7 +337,10 @@ function woocommerce_white(){
             $white_args = array(
                                     'token'         => $_POST['whiteToken'],
                                     'currency'      => get_woocommerce_currency(),
-                                    'total'         => $order->get_total(),
+                                    'amount'        => $order->get_total(),
+
+                                    // These fields are currently ignored (TODO: Track them)
+                                    // TODO: Track 'client' (e.g. WooCommerce)
 
                                     // Order key
                                     'merchantOrderId' => $order->get_order_number(),
@@ -363,7 +366,7 @@ function woocommerce_white(){
                     White::setApiKey($this->live_secret_key);
                 }
                 $charge = White_Charge::create($white_args);
-                if ($charge['captured'] == 'true') {
+                if ($charge['is_captured']) {
                     $order->payment_complete();
                     return array(
                         'result' => 'success',
