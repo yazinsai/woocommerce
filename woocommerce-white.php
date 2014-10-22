@@ -188,7 +188,7 @@ function woocommerce_white(){
             </ul>
 
             <fieldset>
-            <input id="token" name="token" type="hidden" value="">
+            <input id="token" name="whiteToken" type="hidden" value="">
 
             <!-- Credit card number -->
             <p class="form-row form-row-first">
@@ -328,29 +328,29 @@ function woocommerce_white(){
 
             // White Args
             $white_args = array(
-                                    'card'          => $_POST['whiteToken'],
-                                    'currency'      => get_woocommerce_currency(),
-                                    'amount'        => $order->get_total(),
+                            'card'          => $_POST['whiteToken'],
+                            'currency'      => get_woocommerce_currency(),
+                            'amount'        => $order->get_total(),
 
-                                    // These fields are currently ignored (TODO: Track them)
-                                    // TODO: Track 'client' (e.g. WooCommerce)
+                            // These fields are currently ignored (TODO: Track them)
+                            // TODO: Track 'client' (e.g. WooCommerce)
 
-                                    // Order key
-                                    'merchantOrderId' => $order->get_order_number(),
+                            // Order key
+                            'merchantOrderId' => $order->get_order_number(),
 
-                                    // Billing Address info
-                                    "billingAddr" => array(
-                                        'name'          => $order->billing_first_name . ' ' . $order->billing_last_name,
-                                        'addrLine1'     => $order->billing_address_1,
-                                        'addrLine2'     => $order->billing_address_2,
-                                        'city'          => $order->billing_city,
-                                        'state'         => $order->billing_state,
-                                        'zipCode'       => $order->billing_postcode,
-                                        'country'       => $order->billing_country,
-                                        'email'         => $order->billing_email,
-                                        'phoneNumber'   => $order->billing_phone
-                                    )
-                                );
+                            // Billing Address info
+                            "billingAddr" => array(
+                                'name'          => $order->billing_first_name . ' ' . $order->billing_last_name,
+                                'addrLine1'     => $order->billing_address_1,
+                                'addrLine2'     => $order->billing_address_2,
+                                'city'          => $order->billing_city,
+                                'state'         => $order->billing_state,
+                                'zipCode'       => $order->billing_postcode,
+                                'country'       => $order->billing_country,
+                                'email'         => $order->billing_email,
+                                'phoneNumber'   => $order->billing_phone
+                            )
+                        );
 
             try {
                 if ($this->test_mode == 'yes') {
