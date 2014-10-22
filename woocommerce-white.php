@@ -260,6 +260,7 @@ function woocommerce_white(){
                             retrieveToken();
                         });
                         jQuery("#white_error_creditcard").show();
+                        // TODO: Show the actual error
                     }
                     else {
                         // Successfully retrieved a token
@@ -278,12 +279,12 @@ function woocommerce_white(){
                     if (jQuery('div.payment_method_white:first').css('display') === 'block') {
                         jQuery('#ccNo').val(jQuery('#ccNo').val().replace(/[^0-9 \.]+/g,''));
                         White.createToken({
-                            key: <?php echo $this->test_mode == 'yes'? $this->test_publishable_key : $this->live_publishable_key ?>,
+                            key: '<?php echo $this->test_mode == 'yes'? $this->test_publishable_key : $this->live_publishable_key ?>',
                             card: {
-                                number: $('#ccNo').val(),
-                                exp_month: $('#expMonth').val(),
-                                exp_year: $('#expYear').val(),
-                                cvv: $('#cvv').val()
+                                number: jQuery('#ccNo').val(),
+                                exp_month: jQuery('#expMonth').val(),
+                                exp_year: jQuery('#expYear').val(),
+                                cvv: jQuery('#cvv').val()
                             },
                             amount: <?php global $woocommerce;echo($woocommerce->cart->total); ?>,
                             currency: '<?php echo get_woocommerce_currency() ?>'
