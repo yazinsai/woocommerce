@@ -9,6 +9,8 @@ Author URI: http://www.whitepayments.com
 License: Under GPL2   
 */
 
+require plugin_dir_path(__FILE__).'vendor/autoload.php';
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /* Add a custom payment class to WC
@@ -371,8 +373,6 @@ function woocommerce_white(){
         }
 
     }
-
-    include plugin_dir_path(__FILE__).'vendor/autoload.php';
 
     /**
      * Add the gateway to WooCommerce
