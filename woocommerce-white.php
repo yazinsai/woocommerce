@@ -328,7 +328,7 @@ function woocommerce_white(){
 
             // White Args
             $white_args = array(
-                                    'token'         => $_POST['whiteToken'],
+                                    'card'          => $_POST['whiteToken'],
                                     'currency'      => get_woocommerce_currency(),
                                     'amount'        => $order->get_total(),
 
@@ -359,13 +359,11 @@ function woocommerce_white(){
                     White::setApiKey($this->live_secret_key);
                 }
                 $charge = White_Charge::create($white_args);
-                if ($charge['is_captured']) {
-                    $order->payment_complete();
-                    return array(
-                        'result' => 'success',
-                        'redirect' => $this->get_return_url( $order )
-                    );
-                }
+                $order->payment_complete();
+                return array(
+                    'result' => 'success',
+                    'redirect' => $this->get_return_url( $order )
+                );
             } catch (White_Error $e) {
                 $woocommerce->add_error(__('Payment error:', 'woothemes') . $e->getMessage());
                 return;
