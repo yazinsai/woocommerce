@@ -285,7 +285,7 @@ function woocommerce_white(){
                                 exp_year: $('#expYear').val(),
                                 cvv: $('#cvv').val()
                             },
-                            amount: <?php echo $woocommerce->cart->total ?>,
+                            amount: <?php global $woocommerce;echo($woocommerce->cart->total); ?>,
                             currency: '<?php echo get_woocommerce_currency() ?>'
                         }, whiteCallback);
                     } else {
