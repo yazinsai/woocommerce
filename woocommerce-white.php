@@ -31,7 +31,7 @@ function woocommerce_white(){
             global $woocommerce;
 
             $this->id = 'white';
-            $this->icon = apply_filters('woocommerce_white_icon', ''.$plugin_dir.'white.png');
+            $this->icon = apply_filters('woocommerce_white_icon', ''.$plugin_dir.'white-cards.png');
             $this->has_fields = true;
 
             // Load the settings
@@ -39,7 +39,7 @@ function woocommerce_white(){
             $this->init_settings();
 
             // Define user set variables
-            $this->title = "Credit card (powered by White)";
+            $this->title = "Credit card";
             $this->test_publishable_key = $this->get_option('test_publishable_key');
             $this->test_secret_key = $this->get_option('test_secret_key');
             $this->live_publishable_key = $this->get_option('live_publishable_key');
@@ -189,7 +189,7 @@ function woocommerce_white(){
             <li>Credit Card details are incorrect, please try again.</li>
             </ul>
 
-            <fieldset>
+            <fieldset class='white-payments'>
             <input id="token" name="whiteToken" type="hidden" value="">
 
             <!-- Credit card number -->
