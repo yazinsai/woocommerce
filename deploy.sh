@@ -75,13 +75,12 @@ echo "Ignoring github specific files and deployment script"
 svn propset svn:ignore "deploy.sh
 README.md
 .git
-.gitignore" 
-#"$SVNPATH/trunk/" (previous line)
+.gitignore" "$SVNPATH/trunk/"
 
 echo "Changing directory to SVN and committing to trunk"
-# cd $SVNPATH/trunk/
+cd $SVNPATH/trunk/
 # Add all new files that are not set to be ignored
-# svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
+svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "Creating new SVN tag & committing it"
