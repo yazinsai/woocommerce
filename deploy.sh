@@ -71,16 +71,13 @@ svn rm $SVNPATH/trunk/*
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
 
-echo "Ignoring github specific files and deployment script"
-svn propset svn:ignore "deploy.sh
-README.md
-.git
-.gitignore" "$SVNPATH/trunk/"
-
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
-# Add all new files that are not set to be ignored
-svn add *
+svn rm trunk/deploy.sh
+svn rm README.md
+svn rm .git
+svn rm .gitignore
+svn add . --force
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "Creating new SVN tag & committing it"
