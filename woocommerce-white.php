@@ -380,7 +380,7 @@ function woocommerce_white(){
                 // Create the customer, then charge
                 $customer = White_Customer::create($white_customer_args);
                 $charge = White_Charge::create(array(
-                    'card' => $customer->tag,
+                    'customer' => $customer['tag'],
                     'currency' => get_woocommerce_currency(),
                     'amount' => $order->get_total()
                     ));
