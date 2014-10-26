@@ -46,7 +46,6 @@ function woocommerce_white(){
             $this->live_secret_key = $this->get_option('live_secret_key');
             $this->description = $this->get_option('description');
             $this->test_mode = $this->get_option('test_mode');
-            $this->auto_add_customers = $this->get_option('auto_add_customers');
 
             // Logs
             if ($this->debug == 'yes'){
@@ -88,8 +87,8 @@ function woocommerce_white(){
         public function admin_options() {
 
             ?>
-            <h3><?php _e( 'White', 'woocommerce' ); ?></h3>
-            <p><?php _e( 'White - Credit Card', 'woocommerce' ); ?></p>
+            <h3><?php _e( 'White Payments', 'woocommerce' ); ?></h3>
+            <p><?php _e( 'Please fill in the below section to start accepting payments on your site! You can find all the required information in your <a href="https://dashboard.whitepayments.com/" target="_blank">White Dashboard</a>.', 'woocommerce' ); ?></p>
 
             <?php if ( $this->is_valid_for_use() ) : ?>
 
@@ -165,14 +164,16 @@ function woocommerce_white(){
                     'type' => 'checkbox',
                     'label' => __( 'Enable Test mode', 'woocommerce' ),
                     'default' => 'no'
-                ),
-                'auto_add_customers' => array(
+                )
+                /*
+                , 'auto_add_customers' => array(
                     'title' => __( 'Auto-add customers', 'woocommerce' ),
                     'type' => 'checkbox',
                     'label' => __( 'Automatically create customers', 'woocommerce' ),
                     'description' => __( 'Automatically creates a customer for every transaction that is processed, so you can bill the same customer again in the future (from your White dashboard)' ),
-                    'default' => 'no'
-                )
+                    'desc_tip' => true,
+                    'default' => 'yes'
+                ) */
             );
 
         }
@@ -376,30 +377,21 @@ function woocommerce_white(){
                     White::setApiKey($this->live_secret_key);
                 }
 
-                if ($this->auto_add_customers == 'yes') {
-                    // Create the customer, then charge
-                    $customer = White_Customer::create($white_customer_args);
-                    $charge = White_Charge::create(array(
-                        'card' => $customer->tag,
-                        'currency' => get_woocommerce_currency(),
-                        'amount' => $order->get_total()
-                        ));
-                } else {
-                    // Create the charge directly (no customer is saved)
-                    $charge = White_Charge::create(array(
-                        'card'          => $_POST['whiteToken'],
-                        'currency'      => get_woocommerce_currency(),
-                        'amount'        => $order->get_total()
-                        ));
-                }
+                // Create the customer, then charge
+                $customer = White_Customer::create($white_customer_args);
+                $charge = White_Charge::create(array(
+                    'card' => $customer->tag,
+                    'currency' => get_woocommerce_currency(),
+                    'amount' => $order->get_total()
+                    ));
 
-                // Nothing raised; all done
+                // No exceptions? Yaay, all done!
                 $order->payment_complete();
                 return array(
                     'result' => 'success',
                     'redirect' => $this->get_return_url( $order )
                 );
-                
+
             } catch (White_Error $e) {
                 $woocommerce->add_error(__('Error:', 'woothemes') . $e->getMessage());
                 return;
