@@ -46,6 +46,7 @@ function woocommerce_white(){
             $this->live_secret_key = $this->get_option('live_secret_key');
             $this->description = $this->get_option('description');
             $this->test_mode = $this->get_option('test_mode');
+            $this->auto_add_customers = $this->get_option('auto_add_customers');
 
             // Logs
             if ($this->debug == 'yes'){
@@ -163,6 +164,13 @@ function woocommerce_white(){
                     'title' => __( 'Test mode', 'woocommerce' ),
                     'type' => 'checkbox',
                     'label' => __( 'Enable Test mode', 'woocommerce' ),
+                    'default' => 'no'
+                ),
+                'auto_add_customers' => array(
+                    'title' => __( 'Auto-add customers', 'woocommerce' ),
+                    'type' => 'checkbox',
+                    'label' => __( 'Automatically create customers', 'woocommerce' ),
+                    'description' => __( 'Automatically creates a customer for every transaction that is processed, so you can bill the same customer again in the future (from your White dashboard)' ),
                     'default' => 'no'
                 )
             );
