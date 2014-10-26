@@ -337,30 +337,37 @@ function woocommerce_white(){
                 $this->log->add( 'white', 'Generating payment form for order ' . $order->get_order_number() . '. Notify URL: ' . $this->notify_url );
 
             // White Args
-            $white_args = array(
-                            'card'          => $_POST['whiteToken'],
-                            'currency'      => get_woocommerce_currency(),
-                            'amount'        => $order->get_total());/*,
+            $white_customer_args = array(
+                'description' => "WooCommerce - ".$order->billing_email,
+                'card' => $_POST['whiteToken'],
+                'email' => $order->billing_email);
 
-                            // These fields are currently ignored (TODO: Track them)
-                            // TODO: Track 'client' (e.g. WooCommerce)
+            /*
+            $white_charge_args = array(
+                'card'          => $_POST['whiteToken'],
+                'currency'      => get_woocommerce_currency(),
+                'amount'        => $order->get_total());,
 
-                            // Order key
-                            'merchantOrderId' => $order->get_order_number(),
+                    // These fields are currently ignored (TODO: Track them)
+                    // TODO: Track 'client' (e.g. WooCommerce)
 
-                            // Billing Address info
-                            "billingAddr" => array(
-                                'name'          => $order->billing_first_name . ' ' . $order->billing_last_name,
-                                'addrLine1'     => $order->billing_address_1,
-                                'addrLine2'     => $order->billing_address_2,
-                                'city'          => $order->billing_city,
-                                'state'         => $order->billing_state,
-                                'zipCode'       => $order->billing_postcode,
-                                'country'       => $order->billing_country,
-                                'email'         => $order->billing_email,
-                                'phoneNumber'   => $order->billing_phone
-                            )
-                        );*/
+                    // Order key
+                    'merchantOrderId' => $order->get_order_number(),
+
+                    // Billing Address info
+                    "billingAddr" => array(
+                        'name'          => $order->billing_first_name . ' ' . $order->billing_last_name,
+                        'addrLine1'     => $order->billing_address_1,
+                        'addrLine2'     => $order->billing_address_2,
+                        'city'          => $order->billing_city,
+                        'state'         => $order->billing_state,
+                        'zipCode'       => $order->billing_postcode,
+                        'country'       => $order->billing_country,
+                        'email'         => $order->billing_email,
+                        'phoneNumber'   => $order->billing_phone
+                    )
+                );
+            */
 
             try {
                 if ($this->test_mode == 'yes') {
@@ -368,12 +375,31 @@ function woocommerce_white(){
                 } else {
                     White::setApiKey($this->live_secret_key);
                 }
-                $charge = White_Charge::create($white_args);
+
+                if ($this->auto_add_customers == 'yes') {
+                    // Create the customer, then charge
+                    $customer = White_Customer::create($white_customer_args);
+                    $charge = White_Charge::create(array(
+                        'card' => $customer->tag,
+                        'currency' => get_woocommerce_currency(),
+                        'amount' => $order->get_total()
+                        ));
+                } else {
+                    // Create the charge directly (no customer is saved)
+                    $charge = White_Charge::create(array(
+                        'card'          => $_POST['whiteToken'],
+                        'currency'      => get_woocommerce_currency(),
+                        'amount'        => $order->get_total()
+                        ));
+                }
+
+                // Nothing raised; all done
                 $order->payment_complete();
                 return array(
                     'result' => 'success',
                     'redirect' => $this->get_return_url( $order )
                 );
+                
             } catch (White_Error $e) {
                 $woocommerce->add_error(__('Error:', 'woothemes') . $e->getMessage());
                 return;
