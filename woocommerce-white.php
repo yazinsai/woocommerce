@@ -333,7 +333,7 @@ function woocommerce_white(){
                 'card' => $_POST['whiteToken'],
                 'currency' => get_woocommerce_currency(),
                 'email' => $order->billing_email,
-                'ip' => $_SERVER['REMOTE_ADDR']
+                'ip' => $_SERVER['REMOTE_ADDR'],
                 /**
                  * TODO: 
                  * Update the amount to consider currencies with varying
