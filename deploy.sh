@@ -24,12 +24,12 @@ echo
 echo ".........................................."
 echo 
 
-# Check for subversion
-if [ $(dpkg-query -W -f='${Status}' subversion 2>/dev/null | grep -c "ok installed") != "1" ]
-then
-  echo "You'll need to install subversion before proceeding. Exiting....";
-  exit 1;
-fi
+# Check for subversion (this only works in Ubuntu :/ )
+# if [ $(dpkg-query -W -f='${Status}' subversion 2>/dev/null | grep -c "ok installed") != "1" ]
+# then
+#   echo "You'll need to install subversion before proceeding. Exiting....";
+#   exit 1;
+# fi
 
 # Check version in readme.txt is the same as plugin file after translating both to unix line breaks to work around grep's failure to identify mac line breaks
 NEWVERSION1=`grep "^Stable tag:" $GITPATH/readme.txt | awk -F' ' '{print $NF}'`
