@@ -58,6 +58,7 @@ function woocommerce_white(){
 
             // Actions
             add_action('woocommerce_receipt_' . $this->id, array($this, 'receipt_page'));
+            add_action('woocommerce_after_checkout_form', array($this, 'payfort_preload_checkout'));
 
             // Save options
             add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -178,145 +179,65 @@ function woocommerce_white(){
          * @return string
          */
         function payment_fields() {
-            $plugin_dir = plugin_dir_url(__FILE__);
-            // Description of payment method from settings
-            if ($this->description) { ?>
-                <p><?php
-                echo $this->description; ?>
-                </p><?php
-            } ?>
+          // Access the global object
+          global $woocommerce;
+          $plugin_dir = plugin_dir_url(__FILE__);
 
-            <ul class="woocommerce-error" style="display:none" id="white_error_creditcard">
+          // Description of payment method from settings
+          if ($this->description) {
+            echo "<p>".$this->description."</p>";
+          }
+
+          // Errors displayed above the form
+          ?>
+          <ul class="woocommerce-error" style="display:none" id="white_error_creditcard">
             <li>Credit Card details are incorrect, please try again.</li>
-            </ul>
+          </ul>
+          <?php
 
-            <fieldset class='white-payments'>
-            <input id="white-token" name="whiteToken" type="hidden" value="">
+          // Are we in test mode?
+          if ($this->test_mode == 'yes') {
+          ?>
+            <div style="background-color:yellow;">
+                You're in <strong>test mode</strong>. Make sure to use <a href="https://whitepayments.com/docs/testing" target="_blank">test cards to checkout</a> :)
+                <br/>------<br/>
+                <em>Tip: You can change this by going to WooCommerce -&gt; Settings -&gt; Checkout -&gt; White</em>
+            </div>
+          <?php
+          }
+          ?>
 
-            <?php
-            if ($this->test_mode == 'yes') { ?>
-                <div style="background-color:yellow;">
-                    You're in <strong>test mode</strong>. Make sure to use <a href="https://whitepayments.com/docs/testing" target="_blank">test cards to checkout</a> :)
-                    <br/>------<br/>
-                    <em>Tip: You can change this by going to WooCommerce -&gt; Settings -&gt; Checkout -&gt; White</em>
-                </div>
-            <?php }
-            ?>
+          <!-- Attach form submission handlers -->
+          <script>
+          jQuery(function(){
 
-            <!-- Credit card number -->
-            <p class="form-row">
-                <label for="white-ccNo"><?php echo __( 'Credit Card number', 'woocommerce' ) ?> <span class="required">*</span></label>
-                <input type="text" class="input-text" id="white-ccNo" autocomplete="off" value="" />
-            </p>
+            // Bind to form submission
+            jQuery('#place_order').unbind('click');
+            jQuery('#place_order').click(function(e) {
+              e.preventDefault();
 
-            <div class="clear"></div>
+              // Open the modal for collecting payment information
+              StartCheckout.open({
+                amount: <?php echo ($woocommerce->cart->total)*100; ?>,
+                currency: "<?php echo get_woocommerce_currency() ?>",
+                email: jQuery("#billing_email").val()
+              });
 
-            <!-- Credit card expiration -->
-            <p class="form-row">
-                <label for="white-expMonth"><?php echo __( 'Expiration date', 'woocommerce') ?> <span class="required">*</span></label>
-                <select id="white-expMonth" class="woocommerce-select woocommerce-cc-month">
-                    <option value=""><?php _e( 'Month', 'woocommerce' ) ?></option><?php
-                    $months = array();
-                    for ( $i = 1; $i <= 12; $i ++ ) {
-                        $timestamp = mktime( 0, 0, 0, $i, 1 );
-                        $months[ date( 'n', $timestamp ) ] = date( 'F', $timestamp );
-                    }
-                    foreach ( $months as $num => $name ) {
-                        printf( '<option value="%02d">%s</option>', $num, $name );
-                    } ?>
-                </select>
-                <select id="white-expYear" class="woocommerce-select woocommerce-cc-year">
-                    <option value=""><?php _e( 'Year', 'woocommerce' ) ?></option>
-                    <?php
-                    $years = array();
-                    for ( $i = date( 'y' ); $i <= date( 'y' ) + 15; $i ++ ) {
-                        printf( '<option value="20%u">20%u</option>', $i, $i );
-                    }
-                    ?>
-                </select>
-            </p>
-            <div class="clear"></div>
+              // Prevent resubmission
+              return false;
+            });
+          });
 
-            <!-- Credit card security code -->
-            <p class="form-row">
-            <label for="white-cvc"><?php _e( 'Card security code', 'woocommerce' ) ?> <span class="required">*</span></label>
-            <input type="text" class="input-text" id="white-cvc" autocomplete="off" maxlength="4" style="width:55px" />
-            <span class="help"><?php _e( '3 or 4 digits usually found on the signature strip.', 'woocommerce' ) ?></span>
-            </p>
-
-            <div class="clear"></div>
-
-            </fieldset>
-
-           <script type="text/javascript">
-                var formName = "order_review";
-                var myForm = document.getElementsByName('checkout')[0];
-                if(myForm) {
-                    myForm.id = "whiteCCForm";
-                    formName = "whiteCCForm";
-                } 
-                jQuery('#' + formName).on("click", function(){
-                    jQuery('#place_order').unbind('click');
-                    jQuery('#place_order').click(function(e) {
-                        e.preventDefault();
-                        retrieveToken();
-                    });
-                });
-
-                function whiteCallback(status, response) {
-                    // Complete
-                    if(response.error) {
-                        // Something went wrong
-                        clearPaymentFields();
-                        jQuery('#place_order').click(function(e) {
-                            e.preventDefault();
-                            retrieveToken();
-                        });
-                        jQuery("#white_error_creditcard").show();
-                        // TODO: Show the actual error
-                    }
-                    else {
-                        // Successfully retrieved a token
-                        clearPaymentFields();
-                        jQuery('#white-token').val(response.id);
-                        jQuery('#place_order').unbind('click');
-                        jQuery('#place_order').click(function(e) {
-                            return true;
-                        });
-                        jQuery('#place_order').click();
-                    }
-                }
-
-                var retrieveToken = function () {
-                    jQuery("#white_error_creditcard").hide();
-                    if (jQuery('div.payment_method_white:first').css('display') === 'block') {
-                        jQuery('#white-ccNo').val(jQuery('#white-ccNo').val().replace(/[^0-9 \.]+/g,''));
-                        var white = new White('<?php echo $this->test_mode == 'yes'? $this->test_open_key : $this->live_open_key ?>');
-                        white.createToken({
-                            number: jQuery('#white-ccNo').val(),
-                            exp_month: jQuery('#white-expMonth').val(),
-                            exp_year: jQuery('#white-expYear').val(),
-                            cvc: jQuery('#white-cvc').val()
-                        }, whiteCallback);
-                    } else {
-                        jQuery('#place_order').unbind('click');
-                        jQuery('#place_order').click(function(e) {
-                            return true;
-                        });
-                        jQuery('#place_order').click();
-                    }
-                }
-
-                function clearPaymentFields() {
-                    jQuery('#white-ccNo').val('');
-                    jQuery('#white-cvc').val('');
-                    jQuery('#white-expMonth').val('');
-                    jQuery('#white-expYear').val('');
-                }
-            </script>
-
-            <script type="text/javascript" src="https://fast.whitepayments.com/whitejs/white.js"></script>
-            <?php
+          function submitFormAfterToken() {
+            // Simulate successful click
+            jQuery('#place_order').unbind('click');
+            jQuery('#place_order').click(function(e) {
+              return true;
+            });
+            jQuery('#place_order').click();
+          }
+          </script>
+          <?php
         }
 
         /**
@@ -342,23 +263,23 @@ function woocommerce_white(){
                 'email' => $order->billing_email,
                 'ip' => $_SERVER['REMOTE_ADDR'],
                 /**
-                 * TODO: 
+                 * TODO:
                  * Update the amount to consider currencies with varying
                  * minimum currency amounts .. I'm just using 100 here for
                  * USD and AED (both with 100 cents = 1 unit).
                  */
-                'amount' => $order->get_total() * 100 
+                'amount' => $order->get_total() * 100
                 );
 
             try {
                 if ($this->test_mode == 'yes') {
-                    White::setApiKey($this->test_secret_key);
+                    Payfort::setApiKey($this->test_secret_key);
                 } else {
-                    White::setApiKey($this->live_secret_key);
+                    Payfort::setApiKey($this->live_secret_key);
                 }
 
                 // Charge the token
-                $charge = White_Charge::create($white_args);
+                $charge = Payfort_Charge::create($white_args);
 
                 // No exceptions? Yaay, all done!
                 $order->payment_complete();
@@ -367,7 +288,7 @@ function woocommerce_white(){
                     'redirect' => $this->get_return_url( $order )
                 );
 
-            } catch (White_Error $e) {
+            } catch (Payfort_Error $e) {
                 // TODO: Can we get the extra params (so the error is more apparent)?
                 // e.g. Instead of "request params are invalid", we get
                 // "extras":{"amount":["minimum amount (in the smallest currency unit) is 185 for AED"]
@@ -381,11 +302,30 @@ function woocommerce_white(){
                     // Use the old version
                     $woocommerce->add_error($message);
                 }
-                
+
                 return;
             }
         }
 
+
+        /**
+         * Preload the checkout.js script so that the iframe is properly loaded by
+         * the time the user checks outs of the page.
+         */
+        function payfort_preload_checkout() {
+          ?>
+          <script src="https://beautiful.start.payfort.com/checkout.js"></script>
+          <script>
+          StartCheckout.config({
+            key: "<?php echo $this->test_mode == 'yes'? $this->test_open_key : $this->live_open_key ?>",
+            complete: function(params) {
+              // whiteCallback()
+              console.log('Here is our final params:', params.token.id, params.email);
+            }
+          });
+          </script>
+          <?php
+        }
     }
 
     /**
