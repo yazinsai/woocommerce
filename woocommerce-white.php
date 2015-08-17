@@ -188,30 +188,26 @@ function woocommerce_white(){
             echo "<p>".$this->description."</p>";
           }
 
-          // Errors displayed above the form
-          ?>
-          <ul class="woocommerce-error" style="display:none" id="white_error_creditcard">
-            <li>Credit Card details are incorrect, please try again.</li>
-          </ul>
-          <?php
-
           // Are we in test mode?
           if ($this->test_mode == 'yes') {
           ?>
             <div style="background-color:yellow;">
-                You're in <strong>test mode</strong>. Make sure to use <a href="https://whitepayments.com/docs/testing" target="_blank">test cards to checkout</a> :)
+                You're in <strong>test mode</strong>. Make sure to use <a href="https://start.payfort.com/docs/testing" target="_blank">test cards to checkout</a> :)
                 <br/>------<br/>
-                <em>Tip: You can change this by going to WooCommerce -&gt; Settings -&gt; Checkout -&gt; White</em>
+                <em>Tip: You can change this by going to WooCommerce -&gt; Settings -&gt; Checkout -&gt; Payfort (Start)</em>
             </div>
           <?php
           }
           ?>
 
-          <!-- Attach form submission handlers -->
+          <!-- Attach our custom form handlers -->
           <script>
           jQuery(function(){
 
-            // Bind to form submission
+            /**
+             * Override the normal Place Order behavior. We want to display the checkout
+             * modal dialog.
+             */
             jQuery('#place_order').unbind('click');
             jQuery('#place_order').click(function(e) {
               e.preventDefault();
@@ -228,13 +224,25 @@ function woocommerce_white(){
             });
           });
 
-          function submitFormAfterToken() {
-            // Simulate successful click
-            jQuery('#place_order').unbind('click');
-            jQuery('#place_order').click(function(e) {
+          /**
+           * This method is called after a token is returned when the form is submitted.
+           * We add the token + email to the form, and then submit the form.
+           */
+          function submitFormWithToken(params) {
+            // params.token.id, params.email
+
+            // Append the params to the form
+            frmCheckout = jQuery("form[name=checkout]");
+            frmCheckout.append("<input type='hidden' name='payfortToken' value='" + params.token.id + "'>");
+            frmCheckout.append("<input type='hidden' name='payfortEmail' value='" + params.email + "'>");
+
+            // Finally, submit the form
+            btnOrder = jQuery('#place_order');
+            btnOrder.unbind('click');
+            btnOrder.click(function(e) {
               return true;
             });
-            jQuery('#place_order').click();
+            btnOrder.click();
           }
           </script>
           <?php
@@ -258,8 +266,8 @@ function woocommerce_white(){
             // White Args
             $white_args = array(
                 'description' => "WooCommerce charge for ".$order->billing_email,
-                'card' => $_POST['whiteToken'],
-                'currency' => get_woocommerce_currency(),
+                'card' => $_POST['payfortToken'],
+                'currency' => strtoupper(get_woocommerce_currency()),
                 'email' => $order->billing_email,
                 'ip' => $_SERVER['REMOTE_ADDR'],
                 /**
@@ -319,8 +327,7 @@ function woocommerce_white(){
           StartCheckout.config({
             key: "<?php echo $this->test_mode == 'yes'? $this->test_open_key : $this->live_open_key ?>",
             complete: function(params) {
-              // whiteCallback()
-              console.log('Here is our final params:', params.token.id, params.email);
+              submitFormWithToken(params); // params.token.id, params.email
             }
           });
           </script>
