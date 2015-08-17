@@ -19,7 +19,7 @@
         },
         "time": "2015-08-11 15:05:52",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-0": {
                 "Payfort": "src/",
