@@ -1,15 +1,15 @@
 <?php
 /*
-Plugin Name: White Payments
-Description: White makes it really easy to start accepting online payments (credit &amp; debit cards) in the Middle East. Sign up is instant, at https://whitepayments.com/
-Version: 2.0.12
-Plugin URI: https://www.whitepayments.com
-Author: White Payments
-Author URI: https://www.whitepayments.com
-License: Under GPL2   
+Plugin Name: Payfort (Start)
+Description: Payfort makes it really easy to start accepting online payments (credit &amp; debit cards) in the Middle East. Sign up is instant, at https://start.payfort.com/
+Version: 0.0.1
+Plugin URI: https://start.payfort.com
+Author: Payfort
+Author URI: https://start.payfort.com
+License: Under GPL2
 */
 
-require plugin_dir_path(__FILE__).'vendor/white/white/White.php';
+require plugin_dir_path(__FILE__).'vendor/payfort/start/Payfort.php';
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

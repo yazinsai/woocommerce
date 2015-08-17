@@ -1,14 +1,15 @@
-=== White Payments ===
+=== Payfort (Start) ===
 Contributors: jamesmay
-Donate link: https://whitepayments.com/
-Tags: white, payments, whitepayments, middle east payments, credit card, middle east payment gateway, payment gateway, whitepayments.com
+Donate link: https://start.payfort.com/
+Tags: start, payfort, payments, middle east payments, credit card, middle east
+payment gateway, payment gateway, start.payfort.com
 Requires at least: 3.0.1
 Tested up to: 4.1.1
-Stable tag: 2.0.12
+Stable tag: 0.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-White makes it easy to accept online payments (credit and debit cards) in the Middle East. No setup fees, no monthly fees. Start in 5 minutes!
+Payfort makes it easy to accept online payments (credit and debit cards) in the Middle East. No setup fees, no monthly fees. Start in 5 minutes!
 
 == Description ==
 
