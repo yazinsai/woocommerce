@@ -4,7 +4,7 @@ Donate link: https://start.payfort.com/
 Tags: payfort, payfort start, payments, middle east payments, credit card, middle east, online payments, credit cards, debit cards, sadad, UAE online payment, payment gateway, payment gateway, start.payfort.com
 Requires at least: 3.0.1
 Tested up to: 4.2.4
-Stable tag: 0.0.9
+Stable tag: 0.0.10
 License: MIT
 License URI: http://opensource.org/licenses/MIT
 
@@ -27,6 +27,7 @@ Doesn't matter if you're in Bahrain, the UAE or Morocco .. it'll work fine eithe
 In order to start using Payfort, please head on over to [our website](https://start.payfort.com/) and register for an online account (it'll only take a minute; we'll wait..)
 
 **Got the account?** Awesome .. now make sure to note the following details from your Dashboard:
+
 - Test Secret Key
 - Test Open Key
 - Live Secret Key

@@ -67,6 +67,7 @@ svn co $SVNURL $SVNPATH
 
 echo "Fix: Clearing svn repo so we can overwrite it"
 svn rm $SVNPATH/trunk/*
+svn rm $SVNPATH/assets/*
 
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
@@ -74,6 +75,11 @@ svn rm deploy.sh
 svn rm README.md
 svn rm .git
 svn rm .gitignore
+
+echo "Adding assets to the root assets folder"
+cd $SVNPATH/assets/
+cp -R $GITPATH/assets/* .
+svn add . --force
 
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
