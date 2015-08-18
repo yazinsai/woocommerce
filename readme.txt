@@ -4,11 +4,11 @@ Donate link: https://start.payfort.com/
 Tags: payfort, payfort start, payments, middle east payments, credit card, middle east, online payments, credit cards, debit cards, sadad, UAE online payment, payment gateway, payment gateway, start.payfort.com
 Requires at least: 3.0.1
 Tested up to: 4.2.4
-Stable tag: 0.0.8
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 0.0.9
+License: MIT
+License URI: http://opensource.org/licenses/MIT
 
-Payfort makes it easy to accept online payments (credit and debit cards) in the Middle East. No setup fees, no monthly fees. Start in just 5 minutes!
+Payfort Start makes it easy (and free) to accept credit cards in the Middle East. You'll be live in 5 minutes.
 
 == Description ==
 
@@ -24,7 +24,7 @@ Doesn't matter if you're in Bahrain, the UAE or Morocco .. it'll work fine eithe
 
 = Requirements =
 
-In order to start using Payfort, please head on over to (our website)[https://start.payfort.com/] and register for an online account (it'll only take a minute; we'll wait..)
+In order to start using Payfort, please head on over to [our website](https://start.payfort.com/) and register for an online account (it'll only take a minute; we'll wait..)
 
 **Got the account?** Awesome .. now make sure to note the following details from your Dashboard:
 - Test Secret Key
@@ -36,7 +36,7 @@ We'll need these when we're setting up the plugin. Best part is .. you don't eve
 
 == Installation ==
 
-1. Install the [Payfort plugin](https://wordpress.org/plugins/payfort) from your Wordpress Dashoard, under Plugins &rarr; Add New section.
+1. Install the [Payfort plugin](https://wordpress.org/plugins/payfort) from your Wordpress Dashboard, under Plugins &rarr; Add New section.
 2. Activate the plugin
 3. Configure the options in the WooCommerce &rarr; Settings &rarr; Checkout screen. This includes the API keys you got from your [Payfort Dashboard](https://dashboard.start.payfort.com/)
 
@@ -47,6 +47,9 @@ We'll need these when we're setting up the plugin. Best part is .. you don't eve
 Use PHP v5.4 or later.
 
 == Changelog ==
+
+= 0.0.9 =
+- Fix readme markdown syntax errors (and send the dev back to markdown-school)
 
 = 0.0.8 =
 - Fix a broken link in the plugin description page
