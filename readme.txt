@@ -4,8 +4,8 @@ Donate link: https://start.payfort.com/
 Tags: start, payfort, payments, middle east payments, credit card, middle east
 payment gateway, payment gateway, start.payfort.com
 Requires at least: 3.0.1
-Tested up to: 4.1.1
-Stable tag: 0.0.1
+Tested up to: 4.1.7
+Stable tag: 0.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,32 +43,5 @@ Use PHP v5.4 or later.
 
 == Changelog ==
 
-= 2.0.12 =
-- Resolve error formatting backwards-incompatible change by WooCommerce
-
-= 2.0.10 =
-- Updated White to refer to vendor folder, and not composer version
-
-= 2.0.8 =
-- Added notice for users in test mode
-
-= 2.0.6 =
-- Send additional order information to White
-
-= 2.0.5 =
-- Enable automatic plugin updates
-
-= 2.0.4 =
-- Fixed an issue with the White Payments plugin not working when a 2Checkout plugin is installed.
-
-= 2.0.3 =
-- Removed `form-row-first` from checkout form
-
-= 2.0.0 =
-- Updated to use the new version of the API
-
-= 1.1.5 =
-- Switched to the AWS hosted white.js (from the outdated Rackspace-hosted version)
-
-= 1.0 =
-- First commit
+= 0.0.4 =
+- There was an issue with the vendor/ folder not getting included in the git repo, resulting in an argument between Wordpress and our plugin. This has now been resolved, and we're back to being best friends.

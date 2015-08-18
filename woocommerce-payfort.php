@@ -2,7 +2,7 @@
 /*
 Plugin Name: Payfort (Start)
 Description: Payfort makes it really easy to start accepting online payments (credit &amp; debit cards) in the Middle East. Sign up is instant, at https://start.payfort.com/
-Version: 0.0.1
+Version: 0.0.4
 Plugin URI: https://start.payfort.com
 Author: Payfort
 Author URI: https://start.payfort.com
@@ -19,22 +19,22 @@ add_filter('auto_update_plugin', '__return_true');
 
 /* Add a custom payment class to WC
   ------------------------------------------------------------ */
-add_action('plugins_loaded', 'woocommerce_white', 0);
+add_action('plugins_loaded', 'woocommerce_payfort', 0);
 
-function woocommerce_white(){
+function woocommerce_payfort(){
   if (!class_exists('WC_Payment_Gateway'))
     return; // if the WC payment gateway class is not available, do nothing
-  if(class_exists('WC_White'))
+  if(class_exists('WC_Gateway_Payfort'))
     return;
 
-    class WC_Gateway_White extends WC_Payment_Gateway{
+    class WC_Gateway_Payfort extends WC_Payment_Gateway{
         public function __construct(){
 
             $plugin_dir = plugin_dir_url(__FILE__);
 
             global $woocommerce;
 
-            $this->id = 'white';
+            $this->id = 'payfort';
             $this->icon = apply_filters('woocommerce_white_icon', ''.$plugin_dir.'white-cards.png');
             $this->has_fields = true;
 
@@ -43,7 +43,7 @@ function woocommerce_white(){
             $this->init_settings();
 
             // Define user set variables
-            $this->title = "Credit / Debit Card (powered by White)";
+            $this->title = "Credit / Debit Card";
             $this->test_open_key = $this->get_option('test_open_key');
             $this->test_secret_key = $this->get_option('test_secret_key');
             $this->live_open_key = $this->get_option('live_open_key');
@@ -75,7 +75,7 @@ function woocommerce_white(){
          * @return bool
          */
         function is_valid_for_use() {
-            if ( ! in_array( get_woocommerce_currency(), apply_filters( 'woocommerce_white_supported_currencies', array( 'AED', 'USD' ) ) ) ) return false;
+            if ( ! in_array( get_woocommerce_currency(), apply_filters( 'woocommerce_payfort_supported_currencies', array( 'AED', 'USD' ) ) ) ) return false;
 
             return true;
         }
@@ -89,8 +89,8 @@ function woocommerce_white(){
         public function admin_options() {
 
             ?>
-            <h3><?php _e( 'White Payments', 'woocommerce' ); ?></h3>
-            <p><?php _e( 'Please fill in the below section to start accepting payments on your site! You can find all the required information in your <a href="https://dashboard.whitepayments.com/" target="_blank">White Dashboard</a>.', 'woocommerce' ); ?></p>
+            <h3><?php _e( 'Payfort Start', 'woocommerce' ); ?></h3>
+            <p><?php _e( 'Please fill in the below section to start accepting payments on your site! You can find all the required information in your <a href="https://dashboard.start.payfort.com/" target="_blank">Payfort Dashboard</a>.', 'woocommerce' ); ?></p>
 
             <?php if ( $this->is_valid_for_use() ) : ?>
 
@@ -102,7 +102,7 @@ function woocommerce_white(){
                 </table><!--/.form-table-->
 
             <?php else : ?>
-                <div class="inline error"><p><strong><?php _e( 'Gateway Disabled', 'woocommerce' ); ?></strong>: <?php _e( 'White does not support your store currency.', 'woocommerce' ); ?></p></div>
+                <div class="inline error"><p><strong><?php _e( 'Gateway Disabled', 'woocommerce' ); ?></strong>: <?php _e( 'Payfort Start does not support your store currency at this time.', 'woocommerce' ); ?></p></div>
             <?php
             endif;
         }
@@ -120,19 +120,19 @@ function woocommerce_white(){
                 'enabled' => array(
                     'title' => __( 'Enable/Disable', 'woocommerce' ),
                     'type' => 'checkbox',
-                    'label' => __( 'Enable White', 'woocommerce' ),
+                    'label' => __( 'Enable Payfort', 'woocommerce' ),
                     'default' => 'yes'
                 ),
                 'description' => array(
                     'title' => __( 'Description', 'woocommerce' ),
                     'type' => 'text',
                     'description' => __( 'This is the description the user sees during checkout.', 'woocommerce' ),
-                    'default' => __( 'Pay for your items with Credit Card', 'woocommerce' )
+                    'default' => __( 'Pay for your items with any Credit or Debit Card', 'woocommerce' )
                 ),
                 'test_open_key' => array(
                     'title' => __( 'Test Open Key', 'woocommerce' ),
                     'type'      => 'text',
-                    'description' => __( 'Please enter your test open key (you can get it from your White dashboard).', 'woocommerce' ),
+                    'description' => __( 'Please enter your test open key (you can get it from your Payfort dashboard).', 'woocommerce' ),
                     'default' => '',
                     'desc_tip'      => true,
                     'placeholder' => ''
@@ -140,7 +140,7 @@ function woocommerce_white(){
                 'test_secret_key' => array(
                     'title' => __( 'Test Secret Key', 'woocommerce' ),
                     'type'      => 'text',
-                    'description' => __( 'Please enter your test secret key (you can get it from your White dashboard).', 'woocommerce' ),
+                    'description' => __( 'Please enter your test secret key (you can get it from your Payfort dashboard).', 'woocommerce' ),
                     'default' => '',
                     'desc_tip'      => true,
                     'placeholder' => ''
@@ -148,7 +148,7 @@ function woocommerce_white(){
                 'live_open_key' => array(
                     'title' => __( 'Live Open Key', 'woocommerce' ),
                     'type'      => 'text',
-                    'description' => __( 'Please enter your live open key (you can get it from your White dashboard).', 'woocommerce' ),
+                    'description' => __( 'Please enter your live open key (you can get it from your Payfort dashboard).', 'woocommerce' ),
                     'default' => '',
                     'desc_tip'      => true,
                     'placeholder' => ''
@@ -156,7 +156,7 @@ function woocommerce_white(){
                 'live_secret_key' => array(
                     'title' => __( 'Live Secret Key', 'woocommerce' ),
                     'type'      => 'text',
-                    'description' => __( 'Please enter your live secret key (you can get it from your White dashboard).', 'woocommerce' ),
+                    'description' => __( 'Please enter your live secret key (you can get it from your Payfort dashboard).', 'woocommerce' ),
                     'default' => '',
                     'desc_tip'      => true,
                     'placeholder' => ''
@@ -188,30 +188,26 @@ function woocommerce_white(){
             echo "<p>".$this->description."</p>";
           }
 
-          // Errors displayed above the form
-          ?>
-          <ul class="woocommerce-error" style="display:none" id="white_error_creditcard">
-            <li>Credit Card details are incorrect, please try again.</li>
-          </ul>
-          <?php
-
           // Are we in test mode?
           if ($this->test_mode == 'yes') {
           ?>
             <div style="background-color:yellow;">
-                You're in <strong>test mode</strong>. Make sure to use <a href="https://whitepayments.com/docs/testing" target="_blank">test cards to checkout</a> :)
+                You're in <strong>test mode</strong>. Make sure to use <a href="https://start.payfort.com/docs/testing" target="_blank">test cards to checkout</a> :)
                 <br/>------<br/>
-                <em>Tip: You can change this by going to WooCommerce -&gt; Settings -&gt; Checkout -&gt; White</em>
+                <em>Tip: You can change this by going to WooCommerce -&gt; Settings -&gt; Checkout -&gt; Payfort (Start)</em>
             </div>
           <?php
           }
           ?>
 
-          <!-- Attach form submission handlers -->
+          <!-- Attach our custom form handlers -->
           <script>
           jQuery(function(){
 
-            // Bind to form submission
+            /**
+             * Override the normal Place Order behavior. We want to display the checkout
+             * modal dialog.
+             */
             jQuery('#place_order').unbind('click');
             jQuery('#place_order').click(function(e) {
               e.preventDefault();
@@ -228,13 +224,25 @@ function woocommerce_white(){
             });
           });
 
-          function submitFormAfterToken() {
-            // Simulate successful click
-            jQuery('#place_order').unbind('click');
-            jQuery('#place_order').click(function(e) {
+          /**
+           * This method is called after a token is returned when the form is submitted.
+           * We add the token + email to the form, and then submit the form.
+           */
+          function submitFormWithToken(params) {
+            // params.token.id, params.email
+
+            // Append the params to the form
+            frmCheckout = jQuery("form[name=checkout]");
+            frmCheckout.append("<input type='hidden' name='payfortToken' value='" + params.token.id + "'>");
+            frmCheckout.append("<input type='hidden' name='payfortEmail' value='" + params.email + "'>");
+
+            // Finally, submit the form
+            btnOrder = jQuery('#place_order');
+            btnOrder.unbind('click');
+            btnOrder.click(function(e) {
               return true;
             });
-            jQuery('#place_order').click();
+            btnOrder.click();
           }
           </script>
           <?php
@@ -253,13 +261,13 @@ function woocommerce_white(){
             $order = new WC_Order($order_id);
 
             if ( 'yes' == $this->debug )
-                $this->log->add( 'white', 'Generating payment form for order ' . $order->get_order_number() . '. Notify URL: ' . $this->notify_url );
+                $this->log->add( 'payfort', 'Generating payment form for order ' . $order->get_order_number() . '. Notify URL: ' . $this->notify_url );
 
-            // White Args
-            $white_args = array(
+            // Charge Arguments
+            $charge_args = array(
                 'description' => "WooCommerce charge for ".$order->billing_email,
-                'card' => $_POST['whiteToken'],
-                'currency' => get_woocommerce_currency(),
+                'card' => $_POST['payfortToken'],
+                'currency' => strtoupper(get_woocommerce_currency()),
                 'email' => $order->billing_email,
                 'ip' => $_SERVER['REMOTE_ADDR'],
                 /**
@@ -279,7 +287,7 @@ function woocommerce_white(){
                 }
 
                 // Charge the token
-                $charge = Payfort_Charge::create($white_args);
+                $charge = Payfort_Charge::create($charge_args);
 
                 // No exceptions? Yaay, all done!
                 $order->payment_complete();
@@ -319,8 +327,7 @@ function woocommerce_white(){
           StartCheckout.config({
             key: "<?php echo $this->test_mode == 'yes'? $this->test_open_key : $this->live_open_key ?>",
             complete: function(params) {
-              // whiteCallback()
-              console.log('Here is our final params:', params.token.id, params.email);
+              submitFormWithToken(params); // params.token.id, params.email
             }
           });
           </script>
@@ -331,11 +338,11 @@ function woocommerce_white(){
     /**
      * Add the gateway to WooCommerce
      **/
-    function add_white_gateway($methods){
-        $methods[] = 'WC_Gateway_White';
+    function add_payfort_gateway($methods){
+        $methods[] = 'WC_Gateway_Payfort';
         return $methods;
     }
 
-    add_filter('woocommerce_payment_gateways', 'add_white_gateway');
+    add_filter('woocommerce_payment_gateways', 'add_payfort_gateway');
 
 }
