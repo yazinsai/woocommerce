@@ -1,2 +1,6 @@
-white-woo.zip
+# Get it from getcomposer.org
 composer.phar
+
+# Don't read the .git subdirectories
+vendor/**/*.git
+vendor/**/*.gitignore
