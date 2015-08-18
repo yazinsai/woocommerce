@@ -4,7 +4,7 @@ Donate link: https://start.payfort.com/
 Tags: payfort, payfort start, payments, middle east payments, credit card, middle east, online payments, credit cards, debit cards, sadad, UAE online payment, payment gateway, payment gateway, start.payfort.com
 Requires at least: 3.0.1
 Tested up to: 4.2.4
-Stable tag: 0.0.10
+Stable tag: 0.0.11
 License: MIT
 License URI: http://opensource.org/licenses/MIT
 
@@ -48,6 +48,9 @@ We'll need these when we're setting up the plugin. Best part is .. you don't eve
 Use PHP v5.4 or later.
 
 == Changelog ==
+
+= 0.0.11 =
+- Deploy issue fixed so we can better deploy in the future
 
 = 0.0.9 =
 - Fix readme markdown syntax errors (and send the dev back to markdown-school)
