@@ -32,12 +32,12 @@ echo
 # fi
 
 # Check version in readme.txt is the same as plugin file after translating both to unix line breaks to work around grep's failure to identify mac line breaks
-NEWVERSION1=`grep "^Stable tag:" $GITPATH/readme.txt | awk -F' ' '{print $NF}'`
-echo "readme.txt version: $NEWVERSION1"
-NEWVERSION2=`grep "^Version:" $GITPATH/$MAINFILE | awk -F' ' '{print $NF}'`
-echo "$MAINFILE version: $NEWVERSION2"
-
-if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Version in readme.txt & $MAINFILE don't match. Exiting...."; exit 1; fi
+# NEWVERSION1=`grep "^Stable tag:" $GITPATH/readme.txt | awk -F' ' '{print $NF}'`
+# echo "readme.txt version: $NEWVERSION1"
+# NEWVERSION2=`grep "^Version:" $GITPATH/$MAINFILE | awk -F' ' '{print $NF}'`
+# echo "$MAINFILE version: $NEWVERSION2"
+#
+# if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Version in readme.txt & $MAINFILE don't match. Exiting...."; exit 1; fi
 
 echo "Versions match in readme.txt and $MAINFILE. Let's proceed..."
 
@@ -80,6 +80,7 @@ echo "Adding assets to the root assets folder"
 cd $SVNPATH/assets/
 cp -R $GITPATH/assets/* .
 svn add . --force
+svn commit --username=$SVNUSER -m "Adding assets"
 
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
@@ -93,6 +94,6 @@ cd $SVNPATH/tags/$NEWVERSION1
 svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
 
 echo "Removing temporary directory $SVNPATH"
-rm -fr $SVNPATH/
+# rm -fr $SVNPATH/
 
 echo "*** FIN ***"
