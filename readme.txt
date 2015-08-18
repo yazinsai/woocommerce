@@ -3,8 +3,8 @@ Contributors: jamesmay
 Donate link: https://start.payfort.com/
 Tags: payfort, payfort start, payments, middle east payments, credit card, middle east, online payments, credit cards, debit cards, sadad, UAE online payment, payment gateway, payment gateway, start.payfort.com
 Requires at least: 3.0.1
-Tested up to: 4.1.7
-Stable tag: 0.0.6
+Tested up to: 4.2.4
+Stable tag: 0.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,7 +24,7 @@ Doesn't matter if you're in Bahrain, the UAE or Morocco .. it'll work fine eithe
 
 == Requirements ==
 
-In order to start using Payfort, please head on over to [http://start.payfort.com/](our website) and register for an online account (it'll only take a minute; we'll wait..)
+In order to start using Payfort, please head on over to (our website)[https://start.payfort.com/] and register for an online account (it'll only take a minute; we'll wait..)
 
 **Got the account?** Awesome .. now make sure to note the following details from your Dashboard:
 - Test Secret Key
@@ -36,9 +36,9 @@ We'll need these when we're setting up the plugin. Best part is .. you don't eve
 
 == Installation ==
 
-1. Extract the `white-woo.zip` file to your `wp-content/plugins/` folder.
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Configure the options in the WooCommerce --> Settings --> Checkout screen.
+1. Install the [Payfort plugin](https://wordpress.org/plugins/payfort) from your Wordpress Dashoard, under Plugins --> Add New section.
+2. Activate the plugin
+3. Configure the options in the WooCommerce --> Settings --> Checkout screen. This includes the API keys you got from your [Payfort Dashboard](https://dahsboard.start.payfort.com/)
 
 == Frequently Asked Questions ==
 
@@ -47,6 +47,9 @@ We'll need these when we're setting up the plugin. Best part is .. you don't eve
 Use PHP v5.4 or later.
 
 == Changelog ==
+
+= 0.0.7 =
+- Yaay for plugin icons!
 
 = 0.0.6 =
 - Nothing serious .. Just prettied up the ReadMe and removed old references to White.
