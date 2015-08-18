@@ -4,7 +4,7 @@ Donate link: https://start.payfort.com/
 Tags: payfort, payfort start, payments, middle east payments, credit card, middle east, online payments, credit cards, debit cards, sadad, UAE online payment, payment gateway, payment gateway, start.payfort.com
 Requires at least: 3.0.1
 Tested up to: 4.2.4
-Stable tag: 0.0.7
+Stable tag: 0.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,7 @@ This WooCommerce plugin makes integrating your store with Payfort a walk in the 
 
 Doesn't matter if you're in Bahrain, the UAE or Morocco .. it'll work fine either way!
 
-== Requirements ==
+= Requirements =
 
 In order to start using Payfort, please head on over to (our website)[https://start.payfort.com/] and register for an online account (it'll only take a minute; we'll wait..)
 
@@ -36,9 +36,9 @@ We'll need these when we're setting up the plugin. Best part is .. you don't eve
 
 == Installation ==
 
-1. Install the [Payfort plugin](https://wordpress.org/plugins/payfort) from your Wordpress Dashoard, under Plugins --> Add New section.
+1. Install the [Payfort plugin](https://wordpress.org/plugins/payfort) from your Wordpress Dashoard, under Plugins &rarr; Add New section.
 2. Activate the plugin
-3. Configure the options in the WooCommerce --> Settings --> Checkout screen. This includes the API keys you got from your [Payfort Dashboard](https://dahsboard.start.payfort.com/)
+3. Configure the options in the WooCommerce &rarr; Settings &rarr; Checkout screen. This includes the API keys you got from your [Payfort Dashboard](https://dashboard.start.payfort.com/)
 
 == Frequently Asked Questions ==
 
@@ -47,6 +47,9 @@ We'll need these when we're setting up the plugin. Best part is .. you don't eve
 Use PHP v5.4 or later.
 
 == Changelog ==
+
+= 0.0.8 =
+- Fix a broken link in the plugin description page
 
 = 0.0.7 =
 - Yaay for plugin icons!
