@@ -5,7 +5,7 @@ Tags: start, payfort, payments, middle east payments, credit card, middle east
 payment gateway, payment gateway, start.payfort.com
 Requires at least: 3.0.1
 Tested up to: 4.1.7
-Stable tag: 0.0.4
+Stable tag: 0.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,9 @@ Got the account? Great .. now make sure to get the following details as well: `L
 Use PHP v5.4 or later.
 
 == Changelog ==
+
+= 0.0.5 =
+- You know how you sometime think you fixed something but didn't. This *really* fixes 0.0.4
 
 = 0.0.4 =
 - There was an issue with the vendor/ folder not getting included in the git repo, resulting in an argument between Wordpress and our plugin. This has now been resolved, and we're back to being best friends.
