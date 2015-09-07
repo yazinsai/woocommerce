@@ -226,6 +226,9 @@ function woocommerce_payfort(){
           function submitFormWithToken(params) {
             // params.token.id, params.email
 
+            // remove old values if any
+            jQuery('input[name=payfortToken], input[name=payfortEmail]').remove();
+
             // Append the params to the form
             frmCheckout = jQuery("form[name=checkout]");
             frmCheckout.append("<input type='hidden' name='payfortToken' value='" + params.token.id + "'>");
