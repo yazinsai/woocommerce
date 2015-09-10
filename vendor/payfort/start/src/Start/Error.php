@@ -1,9 +1,9 @@
 <?php
 /**
- * Generic Payfort error
+ * Generic Start error
  */
 
-class Payfort_Error extends \Exception
+class Start_Error extends \Exception
 {
 
   /**

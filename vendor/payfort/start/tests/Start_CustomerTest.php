@@ -1,9 +1,9 @@
 <?php
-class Payfort_CustomerTest extends \PHPUnit_Framework_TestCase
+class Start_CustomerTest extends \PHPUnit_Framework_TestCase
 {
   function setUp()
   {
-    Payfort::setApiKey('test_sec_k_25dd497d7e657bb761ad6');
+    Start::setApiKey('test_sec_k_2b99b969196bece8fa7fd');
     // Data for a successful customer
     $this->success_data = array(
       "name" => "Test Customer",
@@ -19,12 +19,12 @@ class Payfort_CustomerTest extends \PHPUnit_Framework_TestCase
   }
   function testList()
   {
-    $result = Payfort_Customer::all();
+    $result = Start_Customer::all();
     //No assertion. If there is an error, an exception is thrown. Otherwise it was ok.
   }
   function testCreateSuccess()
   {
-    $result = Payfort_Customer::create($this->success_data);
+    $result = Start_Customer::create($this->success_data);
     $expected = array(
       'id' => '',
       'email' => '',
@@ -40,7 +40,7 @@ class Payfort_CustomerTest extends \PHPUnit_Framework_TestCase
   }
   function testRetrieveCustomerId()
   {
-    $result = Payfort_Customer::create($this->success_data);
+    $result = Start_Customer::create($this->success_data);
     $this->assertArrayHasKey('id', $result);
   }
   // TODO: These tests are really shallow .. beef them up!

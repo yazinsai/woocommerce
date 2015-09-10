@@ -1,15 +1,20 @@
 <?php
 
 /**
- * Class to hold Payfort API settings
+ * Class to hold Start Start API settings
  *
  * @author Yazin <yazin@payfort.com>
  * @link https://start.payfort.com/docs/
  * @license http://opensource.org/licenses/MIT
  */
 
-class Payfort
+class Start
 {
+  /**
+  * Client version
+  * @var string
+  */
+  const VERSION = '0.0.5';
 
   /**
   * Current API key
@@ -85,24 +90,24 @@ class Payfort
   public static function handleErrors($result, $httpStatusCode)
   {
     switch($result['error']['type']) {
-      case Payfort_Error_Authentication::$TYPE:
-        throw new Payfort_Error_Authentication($result['error']['message'], $result['error']['code'], $httpStatusCode);
+      case Start_Error_Authentication::$TYPE:
+        throw new Start_Error_Authentication($result['error']['message'], $result['error']['code'], $httpStatusCode);
         break;
 
-      case Payfort_Error_Banking::$TYPE:
-        throw new Payfort_Error_Banking($result['error']['message'], $result['error']['code'], $httpStatusCode);
+      case Start_Error_Banking::$TYPE:
+        throw new Start_Error_Banking($result['error']['message'], $result['error']['code'], $httpStatusCode);
         break;
 
-      case Payfort_Error_Processing::$TYPE:
-        throw new Payfort_Error_Processing($result['error']['message'], $result['error']['code'], $httpStatusCode);
+      case Start_Error_Processing::$TYPE:
+        throw new Start_Error_Processing($result['error']['message'], $result['error']['code'], $httpStatusCode);
         break;
 
-      case Payfort_Error_Request::$TYPE:
-        throw new Payfort_Error_Request($result['error']['message'], $result['error']['code'], $httpStatusCode);
+      case Start_Error_Request::$TYPE:
+        throw new Start_Error_Request($result['error']['message'], $result['error']['code'], $httpStatusCode);
         break;
     }
 
     // None of the above? Throw a general White Error
-    throw new Payfort_Error($result['error']['message'], $result['error']['code'], $httpStatusCode);
+    throw new Start_Error($result['error']['message'], $result['error']['code'], $httpStatusCode);
   }
 }

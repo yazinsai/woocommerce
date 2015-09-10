@@ -9,7 +9,7 @@ Author URI: https://start.payfort.com
 License: Under GPL2
 */
 
-require plugin_dir_path(__FILE__).'vendor/payfort/start/Payfort.php';
+require plugin_dir_path(__FILE__).'vendor/payfort/start/Start.php';
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
@@ -276,13 +276,13 @@ function woocommerce_payfort(){
 
             try {
                 if ($this->test_mode == 'yes') {
-                    Payfort::setApiKey($this->test_secret_key);
+                    Start::setApiKey($this->test_secret_key);
                 } else {
-                    Payfort::setApiKey($this->live_secret_key);
+                    Start::setApiKey($this->live_secret_key);
                 }
 
                 // Charge the token
-                $charge = Payfort_Charge::create($charge_args);
+                $charge = Start_Charge::create($charge_args);
 
                 // No exceptions? Yaay, all done!
                 $order->payment_complete();
@@ -291,7 +291,7 @@ function woocommerce_payfort(){
                     'redirect' => $this->get_return_url( $order )
                 );
 
-            } catch (Payfort_Error $e) {
+            } catch (Start_Error $e) {
                 // TODO: Can we get the extra params (so the error is more apparent)?
                 // e.g. Instead of "request params are invalid", we get
                 // "extras":{"amount":["minimum amount (in the smallest currency unit) is 185 for AED"]

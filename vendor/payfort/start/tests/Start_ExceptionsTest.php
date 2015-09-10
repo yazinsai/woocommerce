@@ -1,23 +1,23 @@
 <?php
 
-class Payfort_ExceptionsTest extends \PHPUnit_Framework_TestCase
+class Start_ExceptionsTest extends \PHPUnit_Framework_TestCase
 {
 
   /**
-  * @expectedException Payfort_Error_Authentication
+  * @expectedException Start_Error_Authentication
   */
   function testListAuthenticationException()
   {
-    Payfort::setApiKey('invalid_token');
-    Payfort_Charge::all();
+    Start::setApiKey('invalid_token');
+    Start_Charge::all();
   }
 
   /**
-  * @expectedException Payfort_Error_Authentication
+  * @expectedException Start_Error_Authentication
   */
   function testAuthenticationException()
   {
-    Payfort::setApiKey('invalid_token');
+    Start::setApiKey('invalid_token');
 
     $data = array(
       "amount" => 1050,
@@ -31,15 +31,15 @@ class Payfort_ExceptionsTest extends \PHPUnit_Framework_TestCase
       "description" => "Charge for test@example.com"
     );
 
-    Payfort_Charge::create($data);
+    Start_Charge::create($data);
   }
 
   /**
-  * @expectedException Payfort_Error_Request
+  * @expectedException Start_Error_Request
   */
   function testCardException()
   {
-    Payfort::setApiKey('test_sec_k_25dd497d7e657bb761ad6');
+    Start::setApiKey('test_sec_k_2b99b969196bece8fa7fd');
 
     $data = array(
       "amount" => 1050,
@@ -53,17 +53,17 @@ class Payfort_ExceptionsTest extends \PHPUnit_Framework_TestCase
       "description" => "Charge for test@example.com"
     );
 
-    Payfort_Charge::create($data);
+    Start_Charge::create($data);
   }
 
   // This test should raise an exception but doesn't. Raised issue:
   //
   // /**
-  // * @expectedException Payfort_Error_Request
+  // * @expectedException Start_Error_Request
   // */
   // function testParametersException()
   // {
-  //   Payfort::setApiKey('test_sec_k_25dd497d7e657bb761ad6');
+  //   Start::setApiKey('test_sec_k_2b99b969196bece8fa7fd');
 
   //   $data = array(
   //     "amount" => -1.30,
@@ -77,16 +77,16 @@ class Payfort_ExceptionsTest extends \PHPUnit_Framework_TestCase
   //     "description" => "Charge for test@example.com"
   //   );
 
-  //   Payfort_Charge::create($data);
+  //   Start_Charge::create($data);
   // }
 
   // We need to setup the card to raise a Processing error
   // /*
-  //  * @expectedException Payfort_Error_Processing
+  //  * @expectedException Start_Error_Processing
   //  */
   // function testApiException()
   // {
-  //   Payfort::setApiKey('test_sec_k_25dd497d7e657bb761ad6');
+  //   Start::setApiKey('test_sec_k_2b99b969196bece8fa7fd');
 
   //   $data = array(
   //     "amount" => 1050,
@@ -100,6 +100,6 @@ class Payfort_ExceptionsTest extends \PHPUnit_Framework_TestCase
   //     "description" => "Charge for test@example.com"
   //   );
 
-  //   Payfort_Charge::create($data);
+  //   Start_Charge::create($data);
   // }
 }

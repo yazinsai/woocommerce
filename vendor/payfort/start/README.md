@@ -1,15 +1,15 @@
-# White PHP
+# Start PHP
 
-White makes accepting payments in the Middle East ridiculously easy. Sign up for an account at [whitepayments.com](http://whitepayments.com).
+Start makes accepting payments in the Middle East ridiculously easy. Sign up for an account at [https://start.payfort.com](https://start.payfort.com).
 
 ## Getting Started
 
-Using White with your PHP project is simple. 
+Using Start with your PHP project is simple.
 
 If you're using [Composer](https://getcomposer.org/doc/00-intro.md#installation-nix) (and really, who isn't these days amirite?), you can simply run:
 
 ```bash
-php composer.phar require white/white
+php composer.phar require payfort/start
 ```
 
 .. or add a line to your `composer.json` file:
@@ -17,7 +17,7 @@ php composer.phar require white/white
 ```json
 {
     "require": {
-        "white/white": "*"
+        "payfort/start": "*"
     }
 }
 ```
@@ -26,33 +26,33 @@ Now, running `php composer.phar install` will pull the library directly to your 
 
 **Note:** If you're running on a shared host, then you may need to set the `allow_url_fopen` flag for the `php` commands. For the install command, for example, this would look like `php -d allow_url_fopen=On composer.phar install`. The `-d` overrides the `php.ini` settings, where `allow_url_fopen` is usually set to `Off`.
 
-## Using White
+## Using Start
 
-You'll need an account with White if you don't already have one (grab one real quick at [whitepayments.com](http://whitepayments.com) and come right back .. we'll wait).
+You'll need an account with Start if you don't already have one (grab one real quick at [start.payfort.com](https://start.payfort.com) and come right back .. we'll wait).
 
 Got an account? Great .. let's do this.
 
-### 1. Initializing White
+### 1. Initializing Start
 
-To get started, you'll need to initialize White with your secret API key. Here's how that looks (fear not .. we're using a test key, so no real money will be exchanging hands):
+To get started, you'll need to initialize Start with your secret API key. Here's how that looks (fear not .. we're using a test key, so no real money will be exchanging hands):
 
 ```php
 require_once('vendor/autoload.php'); # At the top of your PHP file
 
-# Initialize White object
-White::setApiKey('test_sec_k_25dd497d7e657bb761ad6');
+# Initialize Start object
+Start::setApiKey('test_sec_k_25dd497d7e657bb761ad6');
 ```
 
-That's it! You probably want to do something with the White object though -- it gets really bored when it doesn't have anything to do. 
+That's it! You probably want to do something with the Start object though -- it gets really bored when it doesn't have anything to do. 
 
 Let's run a transaction, shall we.
 
-### 2. Processing a transaction through White
+### 2. Processing a transaction through Start
 
-Now, for the fun part. Here's all the code you need to process a transaction with White:
+Now, for the fun part. Here's all the code you need to process a transaction with Start:
 
 ```php
-White_Charge::create(array(
+Start_Charge::create(array(
   "amount" => 10500, // AED 105.00
   "currency" => "aed",
   "card" => array(
@@ -71,34 +71,34 @@ How can you tell that it was successful? Well, if no exception is raised then yo
 
 ### 3. Handling Errors
 
-Any errors that may occur during a transaction is raised as an Exception. Here's an example of how you can handle errors with White:
+Any errors that may occur during a transaction is raised as an Exception. Here's an example of how you can handle errors with Start:
 
 ```php
 try {
-  // Use White's bindings...
-} catch(White_Error_Banking $e) {
-  // Since it's a decline, White_Error_Banking will be caught
+  // Use Start's bindings...
+} catch(Start_Error_Banking $e) {
+  // Since it's a decline, Start_Error_Banking will be caught
   print('Status is:' . $e->getHttpStatus() . "\n");
   print('Code is:' . $e->getErrorCode() . "\n");
   print('Message is:' . $e->getMessage() . "\n");
 
-} catch (White_Error_Request $e) {
-  // Invalid parameters were supplied to White's API
+} catch (Start_Error_Request $e) {
+  // Invalid parameters were supplied to Start's API
 
-} catch (White_Error_Authentication $e) {
+} catch (Start_Error_Authentication $e) {
   // There's a problem with that API key you provided
 
-} catch (White_Error $e) {
+} catch (Start_Error $e) {
   // Display a very generic error to the user, and maybe send
   // yourself an email
 
 } catch (Exception $e) {
-  // Something else happened, completely unrelated to White
+  // Something else happened, completely unrelated to Start
   
 }
 ```
 
-## Testing White
+## Testing Start
 
 It's probably a good idea to run the unit tests to make sure that everything is fine and dandy. That's also simple.. just run this command from the root of your project folder:
 

@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Payfort\\Test' => array($vendorDir . '/payfort/start/tests'),
-    'Payfort' => array($vendorDir . '/payfort/start/src'),
+    'Start\\Test' => array($vendorDir . '/payfort/start/tests'),
+    'Start' => array($vendorDir . '/payfort/start/src'),
 );

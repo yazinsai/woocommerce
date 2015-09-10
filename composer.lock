@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "payfort/start",
-            "version": "v0.0.3",
+            "version": "v0.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PayfortStart/start-php.git",
-                "reference": "50327c9ab276de226a75d42dc57b85a1d4e314dd"
+                "url": "https://github.com/payfort/start-php.git",
+                "reference": "16f557cd04441cfb8e8ea617115126fcc569fefd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PayfortStart/start-php/zipball/50327c9ab276de226a75d42dc57b85a1d4e314dd",
-                "reference": "50327c9ab276de226a75d42dc57b85a1d4e314dd",
+                "url": "https://api.github.com/repos/payfort/start-php/zipball/16f557cd04441cfb8e8ea617115126fcc569fefd",
+                "reference": "16f557cd04441cfb8e8ea617115126fcc569fefd",
                 "shasum": ""
             },
             "require-dev": {
@@ -26,8 +26,8 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Payfort": "src/",
-                    "Payfort\\Test": "tests/"
+                    "Start": "src/",
+                    "Start\\Test": "tests/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -45,7 +45,7 @@
                 "payfort",
                 "payments"
             ],
-            "time": "2015-08-18 05:22:26"
+            "time": "2015-08-19 17:24:50"
         }
     ],
     "packages-dev": [],
