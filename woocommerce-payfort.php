@@ -316,7 +316,7 @@ function woocommerce_payfort(){
          */
         function payfort_preload_checkout() {
           ?>
-          <script src="http://beautiful.start.dev/checkout.js"></script>
+          <script src="https://beautiful.start.payfort.com/checkout.js"></script>
           <script>
           StartCheckout.config({
             key: "<?php echo $this->test_mode == 'yes'? $this->test_open_key : $this->live_open_key ?>",
