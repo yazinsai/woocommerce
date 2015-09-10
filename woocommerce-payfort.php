@@ -2,7 +2,7 @@
 /*
 Plugin Name: Payfort (Start)
 Description: Payfort makes it really easy to start accepting online payments (credit &amp; debit cards) in the Middle East. Sign up is instant, at https://start.payfort.com/
-Version: 0.0.12
+Version: 0.0.13
 Plugin URI: https://start.payfort.com
 Author: Payfort
 Author URI: https://start.payfort.com
