@@ -213,8 +213,7 @@ function woocommerce_payfort(){
                StartCheckout.open({
                  amount: <?php echo ($woocommerce->cart->total)*100; ?>,
                  currency: "<?php echo get_woocommerce_currency() ?>",
-                 email: jQuery("#billing_email").val(),
-                 form_label: 'OK'
+                 email: jQuery("#billing_email").val()
                });
              });
           });
@@ -317,10 +316,11 @@ function woocommerce_payfort(){
          */
         function payfort_preload_checkout() {
           ?>
-          <script src="https://beautiful.start.payfort.com/checkout.js"></script>
+          <script src="http://beautiful.start.dev/checkout.js"></script>
           <script>
           StartCheckout.config({
             key: "<?php echo $this->test_mode == 'yes'? $this->test_open_key : $this->live_open_key ?>",
+            form_label: 'OK',
             complete: function(params) {
               submitFormWithToken(params); // params.token.id, params.email
             }
