@@ -2,7 +2,7 @@
 /*
 Plugin Name: Payfort (Start)
 Description: Payfort makes it really easy to start accepting online payments (credit &amp; debit cards) in the Middle East. Sign up is instant, at https://start.payfort.com/
-Version: 0.0.14
+Version: 0.0.15
 Plugin URI: https://start.payfort.com
 Author: Payfort
 Author URI: https://start.payfort.com
@@ -257,9 +257,12 @@ function woocommerce_payfort(){
             if ( 'yes' == $this->debug )
                 $this->log->add( 'payfort', 'Generating payment form for order ' . $order->get_order_number() . '. Notify URL: ' . $this->notify_url );
 
+            // Description
+            $charge_description = $order->get_order_number() . ": WooCommerce charge for " . $order->billing_email;
+
             // Charge Arguments
             $charge_args = array(
-                'description' => "WooCommerce charge for ".$order->billing_email,
+                'description' => $charge_description,
                 'card' => $_POST['payfortToken'],
                 'currency' => strtoupper(get_woocommerce_currency()),
                 'email' => $order->billing_email,
