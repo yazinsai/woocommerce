@@ -2,46 +2,35 @@
 /*
 Plugin Name: Payfort (Start)
 Description: Payfort makes it really easy to start accepting online payments (credit &amp; debit cards) in the Middle East. Sign up is instant, at https://start.payfort.com/
-Version: 0.0.15
+Version: 0.0.16
 Plugin URI: https://start.payfort.com
 Author: Payfort
 Author URI: https://start.payfort.com
 License: Under GPL2
-*/
-
+ */
 require plugin_dir_path(__FILE__).'vendor/payfort/start/Start.php';
-
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-
 /* Enable automatic updates to this plugin
-   ----------------------------------------------------------- */
+----------------------------------------------------------- */
 add_filter('auto_update_plugin', '__return_true');
-
 /* Add a custom payment class to WC
-  ------------------------------------------------------------ */
+------------------------------------------------------------ */
 add_action('plugins_loaded', 'woocommerce_payfort', 0);
-
 function woocommerce_payfort(){
-  if (!class_exists('WC_Payment_Gateway'))
-    return; // if the WC payment gateway class is not available, do nothing
-  if(class_exists('WC_Gateway_Payfort'))
-    return;
-
+    if (!class_exists('WC_Payment_Gateway'))
+        return; // if the WC payment gateway class is not available, do nothing
+    if(class_exists('WC_Gateway_Payfort'))
+        return;
     class WC_Gateway_Payfort extends WC_Payment_Gateway{
         public function __construct(){
-
             $plugin_dir = plugin_dir_url(__FILE__);
-
             global $woocommerce;
-
             $this->id = 'payfort';
             $this->icon = apply_filters('woocommerce_white_icon', ''.$plugin_dir.'white-cards.png');
             $this->has_fields = true;
-
             // Load the settings
             $this->init_form_fields();
             $this->init_settings();
-
             // Define user set variables
             $this->title = "Credit / Debit Card";
             $this->test_open_key = $this->get_option('test_open_key');
@@ -50,24 +39,33 @@ function woocommerce_payfort(){
             $this->live_secret_key = $this->get_option('live_secret_key');
             $this->description = $this->get_option('description');
             $this->test_mode = $this->get_option('test_mode');
-
             // Logs
             if ($this->debug == 'yes'){
                 $this->log = $woocommerce->logger();
             }
-
             // Actions
             add_action('woocommerce_receipt_' . $this->id, array($this, 'receipt_page'));
-            add_action('woocommerce_after_checkout_form', array($this, 'payfort_preload_checkout'));
-
+            add_action( 'wp_enqueue_scripts', array( $this, 'payment_scripts' ) );
             // Save options
             add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-
             if (!$this->is_valid_for_use()){
                 $this->enabled = false;
             }
         }
-
+        function payment_scripts() {
+            global $woocommerce;
+            if ( ! is_checkout() ) {
+                return;
+            }
+            wp_enqueue_script( 'beautifuljs', 'https://beautiful.start.payfort.com/checkout.js', array(), WC_VERSION, true );
+            wp_enqueue_script( 'beautifuljs-config',  plugins_url('payfort/assets/js/config.js'), array( 'beautifuljs'), WC_VERSION, true );
+            wp_enqueue_script( 'beautifuljs-checkout',  plugins_url('payfort/assets/js/checkout.js'), array( 'beautifuljs'), WC_VERSION, true );
+            wp_localize_script( 'beautifuljs-config', 'WooCommerceStartParams', array(
+                'key' => $this->test_mode == 'yes'? $this->test_open_key : $this->live_open_key,
+                'amount' => $woocommerce->cart->total * 100,
+                'currency' => get_woocommerce_currency()
+            ));
+        }
         /**
          * Check if this gateway is enabled and available in the user's currency
          *
@@ -76,10 +74,8 @@ function woocommerce_payfort(){
          */
         function is_valid_for_use() {
             if ( ! in_array( get_woocommerce_currency(), apply_filters( 'woocommerce_payfort_supported_currencies', array( 'AED', 'USD' ) ) ) ) return false;
-
             return true;
         }
-
         /**
          * Admin Panel Options
          * - Options for bits like 'api keys' and availability on a country-by-country basis
@@ -87,27 +83,24 @@ function woocommerce_payfort(){
          * @since 1.0.0
          */
         public function admin_options() {
+?>
+        <h3><?php _e( 'Payfort Start', 'woocommerce' ); ?></h3>
+        <p><?php _e( 'Please fill in the below section to start accepting payments on your site! You can find all the required information in your <a href="https://dashboard.start.payfort.com/" target="_blank">Payfort Dashboard</a>.', 'woocommerce' ); ?></p>
 
-            ?>
-            <h3><?php _e( 'Payfort Start', 'woocommerce' ); ?></h3>
-            <p><?php _e( 'Please fill in the below section to start accepting payments on your site! You can find all the required information in your <a href="https://dashboard.start.payfort.com/" target="_blank">Payfort Dashboard</a>.', 'woocommerce' ); ?></p>
+        <?php if ( $this->is_valid_for_use() ) : ?>
 
-            <?php if ( $this->is_valid_for_use() ) : ?>
+        <table class="form-table">
+<?php
+            // Generate the HTML For the settings form.
+            $this->generate_settings_html();
+?>
+        </table><!--/.form-table-->
 
-                <table class="form-table">
-                    <?php
-                    // Generate the HTML For the settings form.
-                    $this->generate_settings_html();
-                    ?>
-                </table><!--/.form-table-->
-
-            <?php else : ?>
-                <div class="inline error"><p><strong><?php _e( 'Gateway Disabled', 'woocommerce' ); ?></strong>: <?php _e( 'Payfort Start does not support your store currency at this time.', 'woocommerce' ); ?></p></div>
-            <?php
-            endif;
+        <?php else : ?>
+        <div class="inline error"><p><strong><?php _e( 'Gateway Disabled', 'woocommerce' ); ?></strong>: <?php _e( 'Payfort Start does not support your store currency at this time.', 'woocommerce' ); ?></p></div>
+<?php
+endif;
         }
-
-
         /**
          * Initialise Gateway Settings Form Fields
          *
@@ -115,7 +108,6 @@ function woocommerce_payfort(){
          * @return void
          */
         function init_form_fields() {
-
             $this->form_fields = array(
                 'enabled' => array(
                     'title' => __( 'Enable/Disable', 'woocommerce' ),
@@ -168,9 +160,7 @@ function woocommerce_payfort(){
                     'default' => 'no'
                 )
             );
-
         }
-
         /**
          * Generate the credit card payment form
          *
@@ -179,69 +169,24 @@ function woocommerce_payfort(){
          * @return string
          */
         function payment_fields() {
-          // Access the global object
-          global $woocommerce;
-          $plugin_dir = plugin_dir_url(__FILE__);
-
-          // Description of payment method from settings
-          if ($this->description) {
-            echo "<p>".$this->description."</p>";
-          }
-
-          // Are we in test mode?
-          if ($this->test_mode == 'yes') {
-          ?>
-            <div style="background-color:yellow;">
-                You're in <strong>test mode</strong>. Make sure to use <a href="https://start.payfort.com/docs/testing" target="_blank">test cards to checkout</a> :)
-                <br/>------<br/>
-                <em>Tip: You can change this by going to WooCommerce -&gt; Settings -&gt; Checkout -&gt; Payfort (Start)</em>
-            </div>
-          <?php
-          }
-          ?>
-
-
-          <div id="payfortCardDetails" style="display: none"></div>
-          <input id="addCardBtn" type="button" value="Enter Card Details"/>
-          <a id="changeCardBtn" href="#_" style="display:none">Change Card Details</a>
-
-          <!-- Attach our custom form handlers -->
-          <script>
-          jQuery(function(){
-
-             jQuery('#addCardBtn, #changeCardBtn').click(function() {
-               StartCheckout.open({
-                 amount: <?php echo ($woocommerce->cart->total)*100; ?>,
-                 currency: "<?php echo get_woocommerce_currency() ?>",
-                 email: jQuery("#billing_email").val()
-               });
-             });
-          });
-
-          /**
-           * This method is called after a token is returned when the form is submitted.
-           * We add the token + email to the form, and then submit the form.
-           */
-          function submitFormWithToken(params) {
-            // params.token.id, params.email
-
-            // remove old values if any
-            jQuery('input[name=payfortToken], input[name=payfortEmail]').remove();
-
-            // Append the params to the form
-            frmCheckout = jQuery("form[name=checkout]");
-            frmCheckout.append("<input type='hidden' name='payfortToken' value='" + params.token.id + "'>");
-            frmCheckout.append("<input type='hidden' name='payfortEmail' value='" + params.email + "'>");
-
-            jQuery('#payfortCardDetails').show().html("<p>Pay with Card: xxxx-xxxx-xxxx-<b>" + params.token.card.last4 + "</b></p>");
-
-            jQuery('#addCardBtn').hide();
-            jQuery('#changeCardBtn').show();
-          }
-          </script>
-          <?php
+            // Access the global object
+            global $woocommerce;
+            $plugin_dir = plugin_dir_url(__FILE__);
+            // Description of payment method from settings
+            if ($this->description) {
+                echo "<p>".$this->description."</p>";
+            }
+            // Are we in test mode?
+            if ($this->test_mode == 'yes') {
+?>
+        <div style="background-color:yellow;">
+        You're in <strong>test mode</strong>. Make sure to use <a href="https://start.payfort.com/docs/testing" target="_blank">test cards to checkout</a> :)
+        <br/>------<br/>
+        <em>Tip: You can change this by going to WooCommerce -&gt; Settings -&gt; Checkout -&gt; Payfort (Start)</em>
+        </div>
+<?php
+            }
         }
-
         /**
          * Process the payment and return the result
          *
@@ -251,88 +196,72 @@ function woocommerce_payfort(){
          */
         function process_payment( $order_id ) {
             global $woocommerce;
-
             $order = new WC_Order($order_id);
-
-            if ( 'yes' == $this->debug )
-                $this->log->add( 'payfort', 'Generating payment form for order ' . $order->get_order_number() . '. Notify URL: ' . $this->notify_url );
-
-            // Description
-            $charge_description = $order->get_order_number() . ": WooCommerce charge for " . $order->billing_email;
-
-            // Charge Arguments
-            $charge_args = array(
-                'description' => $charge_description,
-                'card' => $_POST['payfortToken'],
-                'currency' => strtoupper(get_woocommerce_currency()),
-                'email' => $order->billing_email,
-                'ip' => $_SERVER['REMOTE_ADDR'],
-                /**
-                 * TODO:
-                 * Update the amount to consider currencies with varying
-                 * minimum currency amounts .. I'm just using 100 here for
-                 * USD and AED (both with 100 cents = 1 unit).
-                 */
-                'amount' => $order->get_total() * 100
-                );
-
+            $token = $_POST['payfortToken'];
             try {
+                if ( empty( $token ) ) {
+                    $error_msg = __( 'Please make sure your card details have been entered correctly.', 'woocommerce' );
+                    throw new Start_Error( $error_msg );
+                }
+
+                $charge_description = $order->id . ": WooCommerce charge for " . $order->billing_email;
+
+                // Charge Arguments
+                $charge_args = array(
+                    'description' => $charge_description,
+                    'card' => $token,
+                    'currency' => strtoupper(get_woocommerce_currency()),
+                    'email' => $order->billing_email,
+                    'ip' => $_SERVER['REMOTE_ADDR'],
+                    /**
+                     * TODO:
+                     * Update the amount to consider currencies with varying
+                     * minimum currency amounts .. I'm just using 100 here for
+                     * USD and AED (both with 100 cents = 1 unit).
+                     */
+                    'amount' => $order->get_total() * 100
+                );
                 if ($this->test_mode == 'yes') {
                     Start::setApiKey($this->test_secret_key);
                 } else {
                     Start::setApiKey($this->live_secret_key);
                 }
-
                 // Charge the token
                 $charge = Start_Charge::create($charge_args);
-
                 // No exceptions? Yaay, all done!
                 $order->payment_complete();
                 return array(
                     'result' => 'success',
                     'redirect' => $this->get_return_url( $order )
                 );
-
             } catch (Start_Error $e) {
                 // TODO: Can we get the extra params (so the error is more apparent)?
                 // e.g. Instead of "request params are invalid", we get
                 // "extras":{"amount":["minimum amount (in the smallest currency unit) is 185 for AED"]
-                $message = __('Error:', 'woothemes') . $e->getMessage();
-
+                $error_code = $e->getErrorCode();
+                if ( $error_code === "card_declined" ) {
+                    $message = __('Error: ', 'woothemes') . $e->getMessage() . " Please, try with another card";
+                } else {
+                    $message = __('Error: ', 'woothemes') . $e->getMessage();
+                }
                 // If function should we use?
                 if(function_exists("wc_add_notice")) {
                     // Use the new version of the add_error method
-                    wc_add_notice($message);
+                    wc_add_notice($message, 'error');
                 } else {
                     // Use the old version
                     $woocommerce->add_error($message);
                 }
-
-                return;
+                // we raise 'update_checkout' event for javscript
+                // to remove card token
+                WC()->session->set( 'refresh_totals', true );
+                return array(
+                    'result'   => 'fail',
+                    'redirect' => ''
+                );
             }
-        }
-
-
-        /**
-         * Preload the checkout.js script so that the iframe is properly loaded by
-         * the time the user checks outs of the page.
-         */
-        function payfort_preload_checkout() {
-          ?>
-          <script src="https://beautiful.start.payfort.com/checkout.js"></script>
-          <script>
-          StartCheckout.config({
-            key: "<?php echo $this->test_mode == 'yes'? $this->test_open_key : $this->live_open_key ?>",
-            form_label: 'OK',
-            complete: function(params) {
-              submitFormWithToken(params); // params.token.id, params.email
-            }
-          });
-          </script>
-          <?php
         }
     }
-
     /**
      * Add the gateway to WooCommerce
      **/
@@ -340,7 +269,5 @@ function woocommerce_payfort(){
         $methods[] = 'WC_Gateway_Payfort';
         return $methods;
     }
-
     add_filter('woocommerce_payment_gateways', 'add_payfort_gateway');
-
 }
