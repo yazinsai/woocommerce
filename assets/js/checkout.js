@@ -18,8 +18,6 @@ jQuery( 'form#order_review' ).on( 'submit', function () {
 function resetStartForm() {
 	var form  = jQuery( 'form.checkout, form#order_review' );
 	jQuery('input[name=payfortToken], input[name=payfortEmail]').remove();
-	jQuery('#payfortCardDetails').hide().html("");
-	jQuery('#changeCardBtn').hide();
 }
 
 function createToken() {
@@ -48,20 +46,11 @@ function startFormHandler() {
  */
 function submitFormWithToken(params) {
 	var form  = jQuery( 'form.checkout, form#order_review' );
-	// params.token.id, params.email
 
-	// remove old values if any
 	jQuery('input[name=payfortToken], input[name=payfortEmail]').remove();
 
-	// Append the params to the form
-	frmCheckout = jQuery("form[name=checkout]");
-	frmCheckout.append("<input type='hidden' name='payfortToken' value='" + params.token.id + "'>");
-	frmCheckout.append("<input type='hidden' name='payfortEmail' value='" + params.email + "'>");
-
-	jQuery('#payfortCardDetails').show().html("<p>Pay with Card: xxxx-xxxx-xxxx-<b>" + params.token.card.last4 + "</b></p>");
-
-	jQuery('#addCardBtn').hide();
-	jQuery('#changeCardBtn').show();
+	form.append("<input type='hidden' name='payfortToken' value='" + params.token.id + "'>");
+	form.append("<input type='hidden' name='payfortEmail' value='" + params.email + "'>");
 
 	form.submit();
 }
