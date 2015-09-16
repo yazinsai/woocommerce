@@ -1,5 +1,2 @@
 # Get it from getcomposer.org
 composer.phar
-
-# Assets are loaded in the root trunk outside the folder
-assets/
