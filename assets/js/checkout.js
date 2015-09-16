@@ -2,6 +2,10 @@ jQuery( 'form.checkout' ).on( 'checkout_place_order_payfort', function () {
 	return startFormHandler();
 });
 
+jQuery(document.body).on( 'update_checkout', function () {
+	resetStartForm();
+});
+
 jQuery('input[name=payment_method]').click(function() {
 	resetStartForm();
 });
