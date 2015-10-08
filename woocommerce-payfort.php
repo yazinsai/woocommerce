@@ -2,7 +2,7 @@
 /*
 Plugin Name: Payfort (Start)
 Description: Payfort makes it really easy to start accepting online payments (credit &amp; debit cards) in the Middle East. Sign up is instant, at https://start.payfort.com/
-Version: 0.1.0
+Version: 0.1.1
 Plugin URI: https://start.payfort.com
 Author: Payfort
 Author URI: https://start.payfort.com
@@ -180,7 +180,7 @@ endif;
             if ($this->test_mode == 'yes') {
 ?>
         <div style="background-color:yellow;">
-        You're in <strong>test mode</strong>. Make sure to use <a href="https://docs.start.payfort.com/testing/" target="_blank">test cards to checkout</a> :)
+        You're in <strong>test mode</strong>. Make sure to use <a href="https://docs.start.payfort.com/guides/testing/" target="_blank">test cards to checkout</a> :)
         <br/>------<br/>
         <em>Tip: You can change this by going to WooCommerce -&gt; Settings -&gt; Checkout -&gt; Payfort (Start)</em>
         </div>
