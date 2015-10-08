@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "hash": "b53ecb684d81e56361ff609140316445",
+    "content-hash": "d90e12d198eaf3c42a43106570c675af",
     "packages": [
         {
             "name": "payfort/start",

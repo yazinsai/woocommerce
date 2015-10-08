@@ -2,7 +2,7 @@
 /*
 Plugin Name: Payfort (Start)
 Description: Payfort makes it really easy to start accepting online payments (credit &amp; debit cards) in the Middle East. Sign up is instant, at https://start.payfort.com/
-Version: 0.0.16
+Version: 0.1.0
 Plugin URI: https://start.payfort.com
 Author: Payfort
 Author URI: https://start.payfort.com
@@ -73,7 +73,7 @@ function woocommerce_payfort(){
          * @return bool
          */
         function is_valid_for_use() {
-            if ( ! in_array( get_woocommerce_currency(), apply_filters( 'woocommerce_payfort_supported_currencies', array( 'AED', 'USD' ) ) ) ) return false;
+            // Skip currency check
             return true;
         }
         /**
@@ -112,7 +112,7 @@ endif;
                 'enabled' => array(
                     'title' => __( 'Enable/Disable', 'woocommerce' ),
                     'type' => 'checkbox',
-                    'label' => __( 'Enable Payfort', 'woocommerce' ),
+                    'label' => __( 'Enable the Start gateway', 'woocommerce' ),
                     'default' => 'yes'
                 ),
                 'description' => array(
@@ -124,7 +124,7 @@ endif;
                 'test_open_key' => array(
                     'title' => __( 'Test Open Key', 'woocommerce' ),
                     'type'      => 'text',
-                    'description' => __( 'Please enter your test open key (you can get it from your Payfort dashboard).', 'woocommerce' ),
+                    'description' => __( 'Please enter your test open key (you can get it from your Start dashboard).', 'woocommerce' ),
                     'default' => '',
                     'desc_tip'      => true,
                     'placeholder' => ''
@@ -132,7 +132,7 @@ endif;
                 'test_secret_key' => array(
                     'title' => __( 'Test Secret Key', 'woocommerce' ),
                     'type'      => 'text',
-                    'description' => __( 'Please enter your test secret key (you can get it from your Payfort dashboard).', 'woocommerce' ),
+                    'description' => __( 'Please enter your test secret key (you can get it from your Start dashboard).', 'woocommerce' ),
                     'default' => '',
                     'desc_tip'      => true,
                     'placeholder' => ''
@@ -140,7 +140,7 @@ endif;
                 'live_open_key' => array(
                     'title' => __( 'Live Open Key', 'woocommerce' ),
                     'type'      => 'text',
-                    'description' => __( 'Please enter your live open key (you can get it from your Payfort dashboard).', 'woocommerce' ),
+                    'description' => __( 'Please enter your live open key (you can get it from your Start dashboard).', 'woocommerce' ),
                     'default' => '',
                     'desc_tip'      => true,
                     'placeholder' => ''
@@ -148,7 +148,7 @@ endif;
                 'live_secret_key' => array(
                     'title' => __( 'Live Secret Key', 'woocommerce' ),
                     'type'      => 'text',
-                    'description' => __( 'Please enter your live secret key (you can get it from your Payfort dashboard).', 'woocommerce' ),
+                    'description' => __( 'Please enter your live secret key (you can get it from your Start dashboard).', 'woocommerce' ),
                     'default' => '',
                     'desc_tip'      => true,
                     'placeholder' => ''
@@ -180,7 +180,7 @@ endif;
             if ($this->test_mode == 'yes') {
 ?>
         <div style="background-color:yellow;">
-        You're in <strong>test mode</strong>. Make sure to use <a href="https://start.payfort.com/docs/testing" target="_blank">test cards to checkout</a> :)
+        You're in <strong>test mode</strong>. Make sure to use <a href="https://docs.start.payfort.com/testing/" target="_blank">test cards to checkout</a> :)
         <br/>------<br/>
         <em>Tip: You can change this by going to WooCommerce -&gt; Settings -&gt; Checkout -&gt; Payfort (Start)</em>
         </div>
