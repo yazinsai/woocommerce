@@ -22,7 +22,7 @@ function resetStartForm() {
 
 function createToken() {
 	StartCheckout.open({
-		amount: WooCommerceStartParams.amount,
+		amount: jQuery("input[name=start_amount]").val(),
 		currency: WooCommerceStartParams.currency,
 		email: jQuery("#billing_email").val()
 	});
