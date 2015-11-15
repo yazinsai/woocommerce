@@ -62,7 +62,7 @@ function woocommerce_payfort(){
             wp_enqueue_script( 'beautifuljs-checkout',  plugins_url('payfort/assets/js/checkout.js'), array( 'beautifuljs'), WC_VERSION, true );
             wp_localize_script( 'beautifuljs-config', 'WooCommerceStartParams', array(
                 'key' => $this->test_mode == 'yes'? $this->test_open_key : $this->live_open_key,
-                'amount' => $woocommerce->cart->total * 100,
+                'amount' => WC()->cart->cart_contents_total * 100,
                 'currency' => get_woocommerce_currency()
             ));
         }
