@@ -40,7 +40,7 @@ function woocommerce_payfort(){
             $this->description = $this->get_option('description');
             $this->test_mode = $this->get_option('test_mode');
             // Logs
-            if ($this->debug == 'yes'){
+            if (isset($this->debug) && $this->debug == 'yes') {
                 $this->log = $woocommerce->logger();
             }
             // Actions
@@ -230,6 +230,10 @@ endif;
                 } else {
                     Start::setApiKey($this->live_secret_key);
                 }
+                $woo_version = wpbo_get_woo_version_number();
+                $plugin_data = get_plugin_data("wp-content/plugins/payfort/woocommerce-payfort.php", $markup = true, $translate = true);
+                $userAgent = 'WooCommerce ' . $woo_version . ' / Start Plugin ' . $plugin_data['Version'];
+                Start::setUserAgent($userAgent);
                 // Charge the token
                 $charge = Start_Charge::create($charge_args);
                 // No exceptions? Yaay, all done!
