@@ -1,23 +1,23 @@
 [
     {
         "name": "payfort/start",
-        "version": "v0.0.6",
-        "version_normalized": "0.0.6.0",
+        "version": "0.0.8",
+        "version_normalized": "0.0.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/payfort/start-php.git",
-            "reference": "2feefa524d7fdcc931526517bdbc4b2515f9135c"
+            "reference": "2604a480ecaa827c974c0366fb1bf9eec210ebb9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/payfort/start-php/zipball/2feefa524d7fdcc931526517bdbc4b2515f9135c",
-            "reference": "2feefa524d7fdcc931526517bdbc4b2515f9135c",
+            "url": "https://api.github.com/repos/payfort/start-php/zipball/2604a480ecaa827c974c0366fb1bf9eec210ebb9",
+            "reference": "2604a480ecaa827c974c0366fb1bf9eec210ebb9",
             "shasum": ""
         },
         "require-dev": {
             "phpunit/phpunit": "4.2.*"
         },
-        "time": "2015-11-20 09:15:34",
+        "time": "2015-11-27 13:20:05",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
