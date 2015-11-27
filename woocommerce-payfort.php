@@ -43,12 +43,7 @@ function woocommerce_payfort() {
             $this->live_secret_key = $this->get_option('live_secret_key');
             $this->description = $this->get_option('description');
             $this->test_mode = $this->get_option('test_mode');
-            $this->currency_multiplier = array(
-                'USD' => 100,
-                'AED' => 100,
-                'SAR' => 100,
-                'KWD' => 1000,
-            );
+            $this->currency_multiplier = json_decode(file_get_contents(plugins_url('payfort/assets/currencies.json')),true);
             // Logs
             if (isset($this->debug) && $this->debug == 'yes') {
                 $this->log = $woocommerce->logger();
