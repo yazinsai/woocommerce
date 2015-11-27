@@ -293,7 +293,8 @@ function woocommerce_payfort() {
                 $start_plugin_data = get_file_data('wp-content/plugins/payfort/woocommerce-payfort.php', array('Version'), 'plugin');
                 $woo_plugin_data = get_file_data('wp-content/plugins/woocommerce/woocommerce.php', array('Version'), 'plugin');
                 $userAgent = 'WooCommerce ' . $woo_plugin_data['0'] . ' / Start Plugin ' . $start_plugin_data['0'];
-                $charge = Start_Charge::create($charge_args); 
+                Start_Charge::setAgent($userAgent);
+		$charge = Start_Charge::create($charge_args); 
                 // No exceptions? Yaay, all done!
                 $order->payment_complete();
                 return array(
