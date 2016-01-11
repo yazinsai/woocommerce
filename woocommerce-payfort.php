@@ -43,12 +43,7 @@ function woocommerce_payfort() {
             $this->live_secret_key = $this->get_option('live_secret_key');
             $this->description = $this->get_option('description');
             $this->test_mode = $this->get_option('test_mode');
-            $this->currency_multiplier = array(
-                'USD' => 100,
-                'AED' => 100,
-                'SAR' => 100,
-                'KWD' => 1000,
-            );
+            $this->currency_multiplier = json_decode(file_get_contents(plugins_url('payfort/assets/currencies.json')), true);
             // Logs
             if (isset($this->debug) && $this->debug == 'yes') {
                 $this->log = $woocommerce->logger();
@@ -228,15 +223,15 @@ function woocommerce_payfort() {
                 $user_info = wp_get_current_user();
                 $user_name = $user_info->user_login;
                 $udata = get_userdata($user_info->ID);
-                if(isset($udata->user_registered)){
+                if (isset($udata->user_registered)) {
                     $registered_at = date(DATE_ISO8601, strtotime($udata->user_registered));
-                }else{
+                } else {
                     $registered_at = date(DATE_ISO8601, strtotime(date("Y-m-d H:i:s")));
                 }
                 foreach ($order_items as $key => $items) {
                     $itemClass = new WC_Product($items['product_id']);
                     $order_items_array['title'] = $items['name'];
-                    $order_items_array['amount'] = $itemClass->get_price();
+                    $order_items_array['amount'] = round($itemClass->get_price(), 2) * $this->currency_multiplier[get_woocommerce_currency()];
                     $order_items_array['quantity'] = $items['qty'];
                     array_push($order_items_array_full, $order_items_array);
                 }
@@ -274,17 +269,12 @@ function woocommerce_payfort() {
                     'currency' => strtoupper(get_woocommerce_currency()),
                     'email' => $order->billing_email,
                     'ip' => $_SERVER['REMOTE_ADDR'],
-                    /**
-                     * TODO:
-                     * Update the amount to consider currencies with varying
-                     * minimum currency amounts .. I'm just using 100 here for
-                     * USD and AED (both with 100 cents = 1 unit).
-                     */
                     'amount' => $order->get_total() * $this->currency_multiplier[get_woocommerce_currency()],
                     'shopping_cart' => $shopping_cart_array,
+                    'shipping_amount' => round($order->get_total_shipping(), 2) * $this->currency_multiplier[get_woocommerce_currency()],
                     'metadata' => array('reference_id' => $order_id)
                 );
-                
+
                 if ($this->test_mode == 'yes') {
                     Start::setApiKey($this->test_secret_key);
                 } else {
@@ -294,7 +284,7 @@ function woocommerce_payfort() {
                 $woo_plugin_data = get_file_data('wp-content/plugins/woocommerce/woocommerce.php', array('Version'), 'plugin');
                 $userAgent = 'WooCommerce ' . $woo_plugin_data['0'] . ' / Start Plugin ' . $start_plugin_data['0'];
                 Start::setUserAgent($userAgent);
-		$charge = Start_Charge::create($charge_args); 
+                $charge = Start_Charge::create($charge_args);
                 // No exceptions? Yaay, all done!
                 $order->payment_complete();
                 return array(
