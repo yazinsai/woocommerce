@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4785606076c5427a8d2ffca8386dc935",
-    "content-hash": "d91907adf49a1168d882dec1d0052257",
+    "hash": "ee97f450285e5db68dabcacf47087ef2",
+    "content-hash": "4c52754585348cc254e014c1c14d1431",
     "packages": [
         {
             "name": "payfort/start",
-            "version": "0.0.8",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/payfort/start-php.git",
-                "reference": "2604a480ecaa827c974c0366fb1bf9eec210ebb9"
+                "reference": "b3337d6fa5da27ee456f89d8146f82e039edeab6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/payfort/start-php/zipball/2604a480ecaa827c974c0366fb1bf9eec210ebb9",
-                "reference": "2604a480ecaa827c974c0366fb1bf9eec210ebb9",
+                "url": "https://api.github.com/repos/payfort/start-php/zipball/b3337d6fa5da27ee456f89d8146f82e039edeab6",
+                "reference": "b3337d6fa5da27ee456f89d8146f82e039edeab6",
                 "shasum": ""
             },
             "require-dev": {
@@ -46,7 +46,7 @@
                 "payfort",
                 "payments"
             ],
-            "time": "2015-11-27 13:20:05"
+            "time": "2016-02-03 11:03:57"
         }
     ],
     "packages-dev": [],
