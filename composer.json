@@ -1,5 +1,5 @@
 {
   "require": {
-    "payfort/start": "v0.0.8"
+    "payfort/start": "0.1.1"
   }
 }
