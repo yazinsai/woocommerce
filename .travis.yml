@@ -1,0 +1,12 @@
+sudo: required
+
+language: ruby
+
+services:
+  - docker
+
+before_install:
+- docker run --name app -d payfortstart/woocommerce-app
+
+script:
+  - docker run --link app:app payfortstart/woocommerce-test /bin/sh -c "xvfb-run -a  bundle exec rspec"
