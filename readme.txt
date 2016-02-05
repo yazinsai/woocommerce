@@ -87,3 +87,5 @@ Use PHP v5.4 or later.
 
 = 0.0.4 =
 - There was an issue with the vendor/ folder not getting included in the git repo, resulting in an argument between Wordpress and our plugin. This has now been resolved, and we're back to being best friends.
+
+(c) Payfort 2016
