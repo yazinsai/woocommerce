@@ -3,8 +3,8 @@ services:
 - docker
 before_install:
 - docker pull payfortstart/woocommerce-test
-- docker build -t payfort/woocommerce .
-- docker run --name app -d payfortstart/woocommerce
+- docker build -t woocommerce-app .
+- docker run --name app -d woocommerce-app
 - docker ps -a
 script:
 - docker run --link app:app payfortstart/woocommerce-test /bin/sh -c "xvfb-run -a  bundle
